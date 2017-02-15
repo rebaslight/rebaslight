@@ -1,0 +1,21 @@
+version: 0.4.{build}
+
+platform:
+  - x64
+
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 7 x64
+  - yarn install
+
+build_script:
+  - yarn run dist
+
+test: off

@@ -1,9 +1,59 @@
 {
   "name": "rebaslight",
   "version": "0.0.0",
+  "private": true,
   "description": "Rebaslight - an easy to use special effects editor",
   "repository": "git@github.com:rebaslight/rebaslight.git",
   "author": "Small Helm LLC <dev@smallhelm.com>",
   "license": "AGPL-3.0+",
-  "main": "src/main.js"
+  "main": "src/index.js",
+  "build": {
+    "appId": "com.rebaslight",
+    "category": "public.app-category.graphics-design",
+    "files": [
+      "src",
+      "node_modules"
+    ],
+    "extraResources": [
+      {
+        "from": "ffmpeg/${os}/${arch}",
+        "to": ".",
+        "filter": ["**/*"]
+      }
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "nsis": {
+      "unicode": false
+    }
+  },
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "start": "electron ./src",
+    "pack": "build --dir",
+    "dist": "build",
+    "release": "build"
+  },
+  "devDependencies": {
+    "electron": "1.6.0",
+    "electron-builder": "13.7.0"
+  }
 }
