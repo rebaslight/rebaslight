@@ -1,10 +1,7 @@
-# rebaslight
-Rebaslight - an easy to use special effects editor
-
-## License
+# Rebaslight License
 
 Copyright (c) 2017 Small Helm LLC. All Rights Reserved.
-
+ 
 Rebaslight is dual-licensed.
 
 You may use Rebaslight at no cost under the under the terms and conditions of the "[Trial License Agreement](https://github.com/rebaslight/rebaslight/blob/master/TRIAL-LICENSE.md)"
