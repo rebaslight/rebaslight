@@ -1,55 +1,102 @@
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
-const url = require('url')
+var _ = require("lodash");
+var h = require("virtual-dom/h");
+var S = require("./view/styles");
+var bus = require("./event-bus");
+var vdomHB = require("./vdom-hb");
+var AbsoluteLayout = require("virtual-dom-absolute-layout");
+var getTimelineHeight = require("./getTimelineHeight");
+var getNFramesForProject = require("./getNFramesForProject");
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win
+var Menu = require("./view/Menu");
+var Debug = require("./view/Debug");
+var Modals = require("./view/modals");
+var Timeline = require("./view/Timeline");
+var EffectPanel = require("./view/EffectPanel");
+var FrameEditor = require("./view/FrameEditor");
+var MainSourceBar = require("./view/MainSourceBar");
+var VerticalDivider = require("./view/VerticalDivider");
+var HorizontalDivider = require("./view/HorizontalDivider");
+var FrameEditorControls = require("./view/FrameEditorControls");
 
-function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600})
+require("normalize.css.js");
+require("font-awesome/css/font-awesome.css");
+require("./actions");
+require("./update-checker");
 
-  // and load the index.html of the app.
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-  // Open the DevTools.
-  win.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
-}
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
+var render = function(state){
+  var n_frames = getNFramesForProject(state.current_project);
+  var timeline_h = getTimelineHeight(state);
+  if(n_frames === 1){
+    return AbsoluteLayout(h, [
+      [Modals(state), 0],
+      [Menu(state), S.sizes.menu_height],
+      [AbsoluteLayout(h, [
+        [AbsoluteLayout(h, [
+          [EffectPanel(state)],
+          [HorizontalDivider(), S.sizes.divider],
+          [MainSourceBar(state), S.sizes.mainsource_bar_height],
+          [HorizontalDivider(), S.sizes.divider],
+          [Timeline(state), timeline_h]
+        ]), S.sizes.left_panels],
+        [VerticalDivider(), S.sizes.divider],
+        [FrameEditor(state)],
+        [VerticalDivider(), S.sizes.divider],
+        [FrameEditorControls(state), S.sizes.FrameEditorControls_width],
+        [Debug(state), S.sizes.Debug_width]
+      ], true)]
+    ]);
   }
-})
+  return AbsoluteLayout(h, [
+    [Modals(state), 0],
+    [Menu(state), S.sizes.menu_height],
+    [AbsoluteLayout(h, [
+      [EffectPanel(state), S.sizes.left_panels],
+      [VerticalDivider(), S.sizes.divider],
+      [FrameEditor(state)],
+      [VerticalDivider(), S.sizes.divider],
+      [FrameEditorControls(state), S.sizes.FrameEditorControls_width],
+      [Debug(state), S.sizes.Debug_width]
+    ], true)],
+    [HorizontalDivider(), S.sizes.divider],
+    [MainSourceBar(state), S.sizes.mainsource_bar_height],
+    [HorizontalDivider(), S.sizes.divider],
+    [Timeline(state), timeline_h]
+  ]);
+};
 
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
+vdomHB.update({//initial_state
+
+  frame: 0,
+  currentTime: 0,
+  open_layer_id: undefined,
+  preview_mode: false,
+  currently_open_menu: undefined,
+
+  window_w: window.innerWidth,
+  window_h: window.innerHeight,
+
+  error_message_q: [],
+  waiting_progress_bars: {
+    INITIAL_LOAD: {text: "loading..."}
   }
-})
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+});
+document.body.appendChild(vdomHB.init(render));
+window.addEventListener("resize", _.throttle(function(){
+  //even if this is not used, we want to re-render on resizes
+  vdomHB.update({
+    window_w: window.innerWidth,
+    window_h: window.innerHeight
+  });
+}, 100));
+document.body.addEventListener("contextmenu", function(e){
+  e.preventDefault();
+}, true);
+vdomHB.delegator.listenTo("keydown");
+vdomHB.delegator.addGlobalEventListener("keydown", function(ev){
+  var code = ev.keyCode;
+  if(code === 37){
+    bus.emit("seek-inc-by", -1);
+  }else if(code === 39){
+    bus.emit("seek-inc-by", +1);
+  }
+});

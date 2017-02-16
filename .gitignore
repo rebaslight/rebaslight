@@ -1,2 +1,5 @@
 /node_modules/
 /dist/
+/ffmpeg
+/app/bundle.js
+/app/bundle.js.map

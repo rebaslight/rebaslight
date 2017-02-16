@@ -6,19 +6,21 @@
   "repository": "git@github.com:rebaslight/rebaslight.git",
   "author": "Small Helm LLC <dev@smallhelm.com>",
   "license": "AGPL-3.0+",
-  "main": "src/index.js",
+  "main": "app/index.js",
   "build": {
     "appId": "com.rebaslight",
     "category": "public.app-category.graphics-design",
     "files": [
-      "src",
+      "app",
       "node_modules"
     ],
     "extraResources": [
       {
         "from": "ffmpeg/${os}/${arch}",
         "to": ".",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "dmg": {
@@ -47,13 +49,43 @@
   },
   "scripts": {
     "postinstall": "install-app-deps",
-    "start": "electron ./src",
+    "start": "NODE_ENV=development electron ./app",
+    "watch": "NODE_ENV=development webpack --watch",
+    "test": "node src/tests.js",
     "pack": "build --dir",
     "dist": "build",
     "release": "build"
   },
   "devDependencies": {
+    "contra": "^1.9.1",
+    "css-loader": "^0.26.1",
+    "cuid": "^1.3.8",
+    "dom-delegator": "^13.1.0",
     "electron": "1.6.0",
-    "electron-builder": "13.7.0"
+    "electron-builder": "13.7.0",
+    "eslint": "^3.15.0",
+    "eslint-loader": "^1.6.1",
+    "font-awesome": "^4.7.0",
+    "get-in": "^2.0.0",
+    "hex-rgb": "^1.0.0",
+    "js-managed-css": "^1.4.0",
+    "level-js": "^2.2.3",
+    "levelup": "^1.3.1",
+    "lodash": "^4.11.2",
+    "main-loop": "^3.2.0",
+    "normalize.css.js": "^1.0.0",
+    "rgb-hex": "^1.0.0",
+    "seed-random": "^2.2.0",
+    "semver": "^5.1.0",
+    "style-loader": "^0.13.1",
+    "tape": "^4.6.3",
+    "url-loader": "^0.5.7",
+    "virtual-dom": "^2.1.1",
+    "virtual-dom-absolute-layout": "^1.0.0",
+    "virtual-dom-closure-widget": "^1.0.0",
+    "webpack": "^2.2.1",
+    "wrap-prevent-default": "^1.0.0",
+    "xhr": "^2.2.0",
+    "xtend": "^4.0.1"
   }
 }
