@@ -99,11 +99,15 @@ ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
 
+ansi-regex@^1.0.0, ansi-regex@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-1.1.1.tgz#41c847194646375e6a1a5d10c3ca054ef9fc980d"
+
 ansi-regex@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
 
-ansi-styles@^2.2.1:
+ansi-styles@^2.0.1, ansi-styles@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
@@ -481,6 +485,16 @@ center-align@^0.1.1:
   dependencies:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
+
+chalk@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.0.0.tgz#b3cf4ed0ff5397c99c75b8f679db2f52831f96dc"
+  dependencies:
+    ansi-styles "^2.0.1"
+    escape-string-regexp "^1.0.2"
+    has-ansi "^1.0.3"
+    strip-ansi "^2.0.1"
+    supports-color "^1.3.0"
 
 chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
@@ -1716,6 +1730,13 @@ har-validator@~2.0.6:
     is-my-json-valid "^2.12.4"
     pinkie-promise "^2.0.0"
 
+has-ansi@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-1.0.3.tgz#c0b5b1615d9e382b0ff67169d967b425e48ca538"
+  dependencies:
+    ansi-regex "^1.1.0"
+    get-stdin "^4.0.1"
+
 has-ansi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
@@ -2291,6 +2312,10 @@ lodash.memoize@^4.1.0:
 lodash.uniq@^4.3.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
+
+lodash@3.9.3:
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.9.3.tgz#0159e86832feffc6d61d852b12a953b99496bd32"
 
 lodash@^4.0.0, lodash@^4.11.2, lodash@^4.14.0, lodash@^4.3.0:
   version "4.17.4"
@@ -3430,6 +3455,13 @@ sax@~1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.2.tgz#fd8631a23bc7826bef5d871bdb87378c95647828"
 
+scriptsp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/scriptsp/-/scriptsp-1.0.1.tgz#6fd8c9a8a8f36af222b29d86ca29ab1f86c66d8a"
+  dependencies:
+    chalk "1.0.0"
+    lodash "3.9.3"
+
 seed-random@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/seed-random/-/seed-random-2.2.0.tgz#2a9b19e250a817099231a5b99a4daf80b7fbed54"
@@ -3625,6 +3657,12 @@ stringstream@~0.0.4:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/stringstream/-/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
+strip-ansi@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-2.0.1.tgz#df62c1aa94ed2f114e1d0f21fd1d50482b79a60e"
+  dependencies:
+    ansi-regex "^1.0.0"
+
 strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
@@ -3677,6 +3715,10 @@ sumchecker@^2.0.1:
   resolved "https://registry.yarnpkg.com/sumchecker/-/sumchecker-2.0.1.tgz#9ce42ecefc5fce2c602d3623315c52b57a2d69dd"
   dependencies:
     debug "^2.2.0"
+
+supports-color@^1.3.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-1.3.1.tgz#15758df09d8ff3b4acc307539fabe27095e1042d"
 
 supports-color@^2.0.0:
   version "2.0.0"

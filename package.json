@@ -49,7 +49,8 @@
   },
   "scripts": {
     "postinstall": "install-app-deps",
-    "start": "NODE_ENV=development electron ./app",
+    "start": "scriptsp --raw run watch",
+    "run": "NODE_ENV=development electron ./app",
     "watch": "NODE_ENV=development webpack --watch",
     "test": "node src/tests.js",
     "pack": "build --dir",
@@ -75,6 +76,7 @@
     "main-loop": "^3.2.0",
     "normalize.css.js": "^1.0.0",
     "rgb-hex": "^1.0.0",
+    "scriptsp": "^1.0.1",
     "seed-random": "^2.2.0",
     "semver": "^5.1.0",
     "style-loader": "^0.13.1",
