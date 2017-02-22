@@ -1,6 +1,5 @@
 var h = require("virtual-dom/h");
 var Modal = require("./Modal");
-var toRlURL = require("../../toRlURL");
 var css_vars = require("../common_css");
 
 module.exports = function(props){
@@ -14,12 +13,9 @@ module.exports = function(props){
       (new Date()).getFullYear()
     ]),
     h("p", [
-      h("a." + css_vars.link, {href: toRlURL("/terms.html")}, "Terms of Service"),
-      " | ",
-      h("a." + css_vars.link, {href: toRlURL("/privacy.html")}, "Privacy Policy")
-    ]),
-    h("p", [
-      "No affiliation with Lucasfilm, Lucasarts, Star Wars, or Disney."
+      h("a." + css_vars.link, {
+          href: "https://github.com/rebaslight/rebaslight/blob/master/LICENSE.md"
+      }, "License Agreement")
     ])
   ]));
 };

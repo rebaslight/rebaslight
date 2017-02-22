@@ -78,6 +78,13 @@ bus.on("hide-about-modal", function(){
   vdomHB.update({show_AboutModal: false});
 });
 
+bus.on("show-UnlockModal", function(){
+  vdomHB.update({UnlockModal: true});
+});
+bus.on("hide-UnlockModal", function(){
+  vdomHB.update({UnlockModal: undefined});
+});
+
 bus.on("set-preview_mode", function(is_on){
   if(is_on){
     var state = vdomHB.readState();

@@ -180,6 +180,21 @@ module.exports = function(state){
       "Rebaslight "
       + cur_v
       + (/^0/.test(cur_v) ? ' Beta' : '')
+    ),
+    h("a", {
+        href: "#",
+        "ev-click": bus.signal("show-UnlockModal"),
+        style: {
+          color: S.color.text,
+          background: "#770000",
+          textDecoration: "none",
+          fontWeight: "bold",
+          borderRadius: "10px",
+          margin: "0 0 0 10px",
+          padding: "1px 12px"
+        }
+      },
+      "TRIAL VERSION"
     )
   ]);
 };

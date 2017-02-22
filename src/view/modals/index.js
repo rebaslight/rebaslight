@@ -8,6 +8,7 @@ var OpenProject = require("./OpenProject");
 var OpenMainSource = require("./OpenMainSource");
 var AboutModal = require("./AboutModal");
 var ExportModal = require("./ExportModal");
+var UnlockModal = require("./UnlockModal");
 var VideoPlayer = require("./VideoPlayer");
 var ConvertModal = require("./ConvertModal");
 var GenericModal = require("./GenericModal");
@@ -67,6 +68,9 @@ var renderModal = function(state){
     return AboutModal({
       onClose: bus.signal("hide-about-modal")
     });
+  }
+  if(state.UnlockModal){
+    return UnlockModal(state);
   }
   if(state.video_player_modal
       && state.video_player_modal.file_path){
