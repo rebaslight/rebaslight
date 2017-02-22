@@ -164,5 +164,10 @@ module.exports = {
     }
     delete db.projects[project_id];
     jsonDB.save(db);
+  },
+  signToUnlock: function(signature){
+    var db = jsonDB.read();
+    db.unlocked = signature;
+    jsonDB.save(db);
   }
 };

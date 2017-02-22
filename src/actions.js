@@ -84,6 +84,9 @@ bus.on("show-UnlockModal", function(){
 bus.on("hide-UnlockModal", function(){
   vdomHB.update({UnlockModal: undefined});
 });
+bus.on("sign-to-unlock", function(signature){
+  backend.signToUnlock(signature);
+});
 
 bus.on("set-preview_mode", function(is_on){
   if(is_on){

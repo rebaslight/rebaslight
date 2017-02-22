@@ -181,7 +181,7 @@ module.exports = function(state){
       + cur_v
       + (/^0/.test(cur_v) ? ' Beta' : '')
     ),
-    h("a", {
+    state.unlocked ? null : h("a", {
         href: "#",
         "ev-click": bus.signal("show-UnlockModal"),
         style: {

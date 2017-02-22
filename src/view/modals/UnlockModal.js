@@ -46,7 +46,11 @@ module.exports = function(state){
   }, h("form", {"ev-submit": function(e){
     e.preventDefault();
     var data = formNodeToData(e.target);
-    //console.log("TODO unlock", data);
+    if(!_.isString(data.signature)){
+    }
+    var str = data.signature;
+    str += " on " + (new Date()).toISOString();
+    bus.emit("sign-to-unlock", str);
   }}, [
     "TODO explain",
     h("div", {style: {"margin-bottom": "1em"}}, [
