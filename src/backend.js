@@ -33,7 +33,11 @@ module.exports = {
         });
         if(_.has(json, "auth")){
           //if they purchased an effect in the past, then unlock
-          if(_.has(json.auth, "token") && _.isString(json.auth.token)){
+          if(true
+              && _.isEqual(_.keys(json.auth).sort(), ["email", "timestamp", "token"])
+              && _.isString(json.auth.email)
+              && _.isNumber(json.auth.timestamp)
+              && _.isString(json.auth.token)){
             if(_.find(json.projects, function(p){
               return _.find(p.layers, function(l){
                 return _.includes([
@@ -42,10 +46,16 @@ module.exports = {
                 ], l.effect_id);
               });
             })){
-              json.unlocked = json.auth.token;
+              json.unlocked = "Effect purchased by: "
+                + json.auth.email
+                + " | last sign-in: "
+                + (new Date(json.auth.timestamp * 1000)).toISOString();
             }
           }
           delete json.auth;
+        }
+        if(_.has(json, "unlocked") && (!_.isString(json.unlocked) || json.unlocked.trim().length === 0)){
+            delete json.unlocked;
         }
         jsonDB.save(json);//this updates in-memory state as well
         bus.emit("initial-load-done");
@@ -166,6 +176,9 @@ module.exports = {
     jsonDB.save(db);
   },
   signToUnlock: function(signature){
+    if(!_.isString(signature)){
+        return;
+    }
     var db = jsonDB.read();
     db.unlocked = signature;
     jsonDB.save(db);
