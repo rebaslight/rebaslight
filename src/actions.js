@@ -78,10 +78,13 @@ bus.on("hide-about-modal", function(){
   vdomHB.update({show_AboutModal: false});
 });
 
-bus.on("show-UnlockModal", function(){
+bus.on("UnlockModal-show", function(){
   vdomHB.update({UnlockModal: true});
 });
-bus.on("hide-UnlockModal", function(){
+bus.on("UnlockModal-unsign", function(){
+  backend.removeUnlocked();
+});
+bus.on("UnlockModal-hide", function(){
   vdomHB.update({UnlockModal: undefined});
 });
 bus.on("sign-to-unlock", function(signature){
@@ -129,7 +132,11 @@ bus.on("set-preview_mode", function(is_on){
 });
 
 bus.on("set-unlocked", function(unlocked){
-  vdomHB.update({unlocked: !!unlocked});
+  vdomHB.update({
+    unlocked: _.isString(unlocked) && unlocked.trim().length > 0
+      ? unlocked
+      : undefined
+  });
 });
 
 bus.on("set-currently_open_menu", function(id){

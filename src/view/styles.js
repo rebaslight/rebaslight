@@ -33,6 +33,7 @@ var color = {
   border_highlight: "#DDA017",
   main_bg: "#595959",
   dark_bg: "#282828",
+  light_bg: "#888888",
   black_bg: "#000000",
   selected_bg: "#446292",
   highlight: "#0080FF",

@@ -177,10 +177,18 @@ module.exports = {
   },
   signToUnlock: function(signature){
     if(!_.isString(signature)){
-        return;
+      return;
     }
     var db = jsonDB.read();
     db.unlocked = signature;
+    jsonDB.save(db);
+  },
+  removeUnlocked: function(){
+    var db = jsonDB.read();
+    if(!_.has(db, "unlocked")){
+      return;
+    }
+    delete db.unlocked;
     jsonDB.save(db);
   }
 };
