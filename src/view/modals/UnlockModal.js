@@ -8,6 +8,8 @@ var Button = require("../Button");
 var prevDflt = require("wrap-prevent-default");
 var css_vars = require("../common_css");
 
+var license_url = "https://github.com/rebaslight/rebaslight/blob/master/LICENSE.md";
+
 var css = jsCSS({
   "input.$text-input": {
     "display": "block",
@@ -51,9 +53,7 @@ module.exports = function(state){
         "Thank you for purchasing a user license!"
       ]),
       h("p", [
-        h("a." + css_vars.link, {
-            href: "https://github.com/rebaslight/rebaslight/blob/master/LICENSE.md"
-        }, "License Agreement")
+        h("a." + css_vars.link, {href: license_url}, "License Agreement")
       ]),
       h("a." + css_vars.link, {
         href: "#",
@@ -72,9 +72,6 @@ module.exports = function(state){
           margin: "5px 0 10px 0",
         }
       }, state.unlocked),
-      h("p", [
-        "Thank you!"
-      ]),
       h("div", [
         Button({onClick: prevDflt(onClose)}, "Ok"),
         h("a." + css_vars.link, {
@@ -88,28 +85,88 @@ module.exports = function(state){
     ]));
   }
   return Modal({
-    title: "Unlock",
+    title: "Trial Version",
     onClose: onClose,
     buttons: []
   }, h("form", {"ev-submit": function(e){
     e.preventDefault();
     var data = formNodeToData(e.target);
-    if(!_.isString(data.signature)){
-        //TODO
+    if(!_.isString(data.signature) || (data.signature.trim().length === 0)){
+        return;
     }
     var str = data.signature;
     str += " on " + (new Date()).toISOString();
     bus.emit("sign-to-unlock", str);
   }}, [
-    "TODO explain",
-    h("div", {style: {"margin-bottom": "1em"}}, [
-      h("label", ["Sign Your Name"]),
-      h("input." + css["text-input"], {
-        "name": "signature",
-        "type": "text"
-      })
+    h("p", [
+      "Thank you for trying Rebaslight."
     ]),
-    "TODO date",
-    Button({}, "Sign")
+    h("p", [
+      "If you like Rebaslight please purchase the \"Rebaslight user license.\"",
+    ]),
+    h("p", [
+      h("a", {
+        href: "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JB9JVER43JHE2",
+        _target: "blank"
+      }, [
+        h("img", {
+          src: "https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif",
+          alt: "Buy Now"
+        })
+      ])
+    ]),
+    h("div", [
+      "If you:",
+    ]),
+    h("ul", {style: {marginTop: "5px"}}, [
+        h("li", ["purchased the \"Rebaslight user license\" *"]),
+        h("li", [
+          "and agree to the ",
+          h("a." + css_vars.link, {href: license_url}, "License Agreement")
+        ]),
+    ]),
+    h("p", [
+      "Then sign here",
+    ]),
+    h("div", [
+      h("table", {style: {width: "100%"}}, [
+        h("tbody", [
+          h("tr", [
+            h("td", [
+              h("input." + css["text-input"], {
+                "name": "signature",
+                "type": "text"
+              })
+            ]),
+            h("td", {style: {textAlign: "center"}}, [
+              ((new Date()).getMonth() + 1),
+              "/",
+              (new Date()).getDate(),
+              "/",
+              (new Date()).getFullYear()
+            ])
+          ]),
+          h("tr", [
+            h("td", {style: {textAlign: "center"}}, [
+              "Name"
+            ]),
+            h("td", {style: {textAlign: "center"}}, [
+              "Date"
+            ])
+          ])
+        ])
+      ])
+    ]),
+    h("div", {style: {margin: "10px 0"}}, [
+      Button({}, "Sign"),
+      h("a." + css_vars.link, {
+        href: "#",
+        "ev-click": onClose,
+        style: {
+          marginLeft: "1em"
+        }
+      }, "Nevermind, stay in trial mode")
+    ]),
+    h("div", {style: {color: "#ccc"}}, ["* or purchased a Rebaslight effect previously"]),
   ]));
 };
