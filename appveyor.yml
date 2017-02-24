@@ -19,7 +19,7 @@ install:
   - rename ffmpeg-bins-win ffmpeg-bins
 
 build_script:
-  - set NODE_ENV=production && yarn run webpack
+  - yarn run webpack
   - yarn run dist
 
 test: off

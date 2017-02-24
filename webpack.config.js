@@ -1,6 +1,10 @@
 var path = require("path");
 var webpack = require("webpack");
 
+var node_env = process.env.NODE_ENV === "development"
+    ? "development"
+    : "production";//default to prod
+
 var conf = {
     entry: "./src/index.js",
     devtool: "source-map",
@@ -36,13 +40,13 @@ var conf = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+                NODE_ENV: JSON.stringify(node_env)
             }
         })
     ]
 };
 
-if(process.env.NODE_ENV === "production"){
+if(node_env === "production"){
     conf.devtool = "source-map";
 
     conf.plugins = conf.plugins.concat([
