@@ -250,7 +250,7 @@ var Widget = mkWidget(function(initial_hb_state){
     var layers = state.preview_mode
       ? state.current_project.layers
       : [];
-    renderFrame(ctx, state.current_project.main_source, layers, state.frame);
+    renderFrame(ctx, state.current_project.main_source, layers, state.frame, state.unlocked);
 
     magnifier.render(mouse_state);
 

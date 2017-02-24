@@ -1,9 +1,10 @@
 var _ = require("lodash");
+var flatInt = require("./flatInt");
 var Effects = require("./effects");
 var getPoints = require("./getPoints");
 var mainSource = require("./main-source");
 
-module.exports = function(ctx, main_source, layers, frame_n){
+module.exports = function(ctx, main_source, layers, frame_n, unlocked){
   ctx.clearRect(0, 0, main_source.frame_w, main_source.frame_h);
 
   ctx.globalCompositeOperation = "screen";
@@ -31,4 +32,23 @@ module.exports = function(ctx, main_source, layers, frame_n){
       effect.render(ctx, settings, points, frame_n);
     }
   });
+
+  if(!unlocked){
+    //Exodus 20:15-16
+    var h = main_source.frame_h;
+    var font_size = Math.max(10, flatInt(main_source.frame_w * .03));
+    var txt = [
+      "Rebaslight Trial Version",
+      "Rebaslight Trial Version",
+      "Rebaslight Trial Version",
+      "Rebaslight Trial Version",
+      "Rebaslight Trial Version",
+      "Rebaslight Trial Version",
+    ].join("    -    ");
+
+    ctx.font = font_size + "px sans-serif";
+    ctx.fillStyle = "#EEE";
+    ctx.fillText(txt, 0, font_size);
+    ctx.fillText(txt, 0, h - font_size);
+  }
 };

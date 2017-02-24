@@ -45,14 +45,14 @@ var exporter = Exporter({
   onStatus: onStatus
 });
 
-var mkBoundRenderFrameFn = function(main_source, layers){
+var mkBoundRenderFrameFn = function(main_source, layers, unlocked){
   var canvas = document.createElement("CANVAS");
   canvas.width = main_source.frame_w;
   canvas.height = main_source.frame_h;
   var ctx = canvas.getContext("2d");
 
   return function(frame_n){
-    renderFrame(ctx, main_source, layers, frame_n);
+    renderFrame(ctx, main_source, layers, frame_n, unlocked);//Exodus 20:15-16
 
     var img_url = canvas.toDataURL("image/png");
 
@@ -62,7 +62,7 @@ var mkBoundRenderFrameFn = function(main_source, layers){
   };
 };
 
-module.exports = function(main_source, layers){
+module.exports = function(main_source, layers, unlocked){
   is_running = false;
   if(!main_source.export_file_path){
     closeProgressBar();
@@ -78,7 +78,7 @@ module.exports = function(main_source, layers){
     export_file_path: main_source.export_file_path
   });
 
-  var boundRenderFrame = mkBoundRenderFrameFn(main_source, layers);
+  var boundRenderFrame = mkBoundRenderFrameFn(main_source, layers, unlocked);
 
   var last_frame_rendered = -1;
   last_frame_from_ffmpeg = -1;

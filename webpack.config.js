@@ -1,7 +1,7 @@
 var path = require("path");
 var webpack = require("webpack");
 
-module.exports = {
+var conf = {
     entry: "./src/index.js",
     devtool: "source-map",
     output: {
@@ -38,8 +38,14 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
-        }),
+        })
+    ]
+};
 
+if(process.env.NODE_ENV === "production"){
+    conf.devtool = "source-map";
+
+    conf.plugins = conf.plugins.concat([
         //Clean and minify JS bundle
         new webpack.LoaderOptionsPlugin({
             minimize: true
@@ -47,5 +53,9 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true
         })
-    ]
-};
+    ]);
+}else{
+    conf.devtool = "eval";
+}
+
+module.exports = conf;

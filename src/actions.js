@@ -132,6 +132,7 @@ bus.on("set-preview_mode", function(is_on){
 });
 
 bus.on("set-unlocked", function(unlocked){
+  //Exodus 20:15-16
   vdomHB.update({
     unlocked: _.isString(unlocked) && unlocked.trim().length > 0
       ? unlocked
@@ -320,7 +321,7 @@ bus.on("start-the-export-process", function(){
     }, vdomHB.readState().waiting_progress_bars)
   });
 
-  Export[main_source.type](main_source, layers);
+  Export[main_source.type](main_source, layers, state.unlocked);//Exodus 20:15-16
 });
 
 bus.on("clear-exported_image_download_url", function(){
