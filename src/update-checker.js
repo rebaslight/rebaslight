@@ -8,14 +8,16 @@ var RLBrowser = require("./RLBrowser");
 
 var checkIfWereUpToDate = function(){
   xhr({
-    url: "http://www.rebaslight.com/latest.json?v=" + cuid(),//to avoid the http cache
+    url: "https://api.github.com/repos/rebaslight/rebaslight/releases/latest?v=" + cuid(),//to avoid the http cache
     json: true,
     headers: {
       "Content-Type": "application/json"
     }
   }, function(err, resp, body){
-    var version = _.get(resp, "body.version");
-    if(_.isString(version)){
+    var version = _.isString(resp && resp.body && resp.body.tag_name)
+        ? resp.body.tag_name.replace(/^v/, "").trim()
+        : null;
+    if(_.isString(version) && version.length > 0){
       if(semver.gt(version, cur_v)){//only if it's newer (i.e. someone was sent a newer version to test out pre-launch)
         bus.emit("new-version-available", version);
       }
