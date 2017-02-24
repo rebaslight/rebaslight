@@ -146,6 +146,10 @@ module.exports = function(state){
       items: [
         ["About", bus.signal("show-about-modal")],
         ["Contact us", {href: toRlURL("/#contact")}],
+        [
+          "License",
+          bus.signal("UnlockModal-show")
+        ],
         ["How To", {href: toRlURL("/#how-to")}]
       ]
     }
@@ -195,7 +199,7 @@ module.exports = function(state){
             padding: "1px 12px"
           }
         },
-        "UNLOCKED"
+        "Thank You"
       )
       : h("a", {
           href: "#",
