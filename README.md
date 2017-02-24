@@ -1,6 +1,8 @@
 # rebaslight
 Rebaslight - an easy to use special effects editor
 
+[Download/Install](http://www.rebaslight.com/#download)
+
 ## License
 
 Copyright (c) 2017 Small Helm LLC. All Rights Reserved.
