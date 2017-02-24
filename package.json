@@ -60,7 +60,7 @@
     "test": "node src/tests.js",
     "pack": "build --dir",
     "webpack": "webpack",
-    "dist": "build",
+    "dist": "build --x64 --ia32",
     "release": "webpack && build"
   },
   "devDependencies": {
