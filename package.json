@@ -54,7 +54,8 @@
     "watch": "NODE_ENV=development webpack --watch",
     "test": "node src/tests.js",
     "pack": "build --dir",
-    "dist": "NODE_ENV=production webpack && build",
+    "webpack": "webpack",
+    "dist": "build",
     "release": "NODE_ENV=production webpack && build"
   },
   "devDependencies": {

@@ -3,6 +3,9 @@ version: 0.4.{build}
 platform:
   - x64
 
+environment:
+  NODE_ENV: production
+
 cache:
   - node_modules
   - '%APPDATA%\npm-cache'
@@ -16,6 +19,7 @@ install:
   - yarn install
 
 build_script:
+  - yarn run webpack
   - yarn run dist
 
 test: off
