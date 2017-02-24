@@ -13,9 +13,10 @@ init:
 
 install:
   - ps: Install-Product node 7 x64
-  - ps: Start-FileDownload 'https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins-win.7z'
-  - ps: 7z x ffmpeg-bins.7z
   - yarn install
+  - ps: Start-FileDownload 'https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins-win.7z'
+  - ps: 7z x ffmpeg-bins-win.7z
+  - rename ffmpeg-bins-win ffmpeg-bins
 
 build_script:
   - set NODE_ENV=production && yarn run webpack

@@ -16,7 +16,7 @@
     ],
     "extraResources": [
       {
-        "from": "ffmpeg/${os}/${arch}",
+        "from": "ffmpeg-bins/${os}/${arch}",
         "to": ".",
         "filter": [
           "**/*"
