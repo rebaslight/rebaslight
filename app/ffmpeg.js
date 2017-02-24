@@ -4,7 +4,7 @@ const spawn = require("child_process").spawn;
 const ipcMain = require("electron").ipcMain;
 const output_settings = require('./ffmpeg-presets');
 
-let ffmpeg_cmd_path = path.join(__dirname, "../ffmpeg");
+let ffmpeg_cmd_path = path.join(__dirname, "../../ffmpeg");
 
 let f;
 
