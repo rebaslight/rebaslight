@@ -18,7 +18,7 @@ var VerticalDivider = require("./view/VerticalDivider");
 var HorizontalDivider = require("./view/HorizontalDivider");
 var FrameEditorControls = require("./view/FrameEditorControls");
 
-require("normalize.css.js");
+require("normalize.css");
 require("font-awesome/css/font-awesome.css");
 require("./actions");
 require("./update-checker");

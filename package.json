@@ -80,7 +80,7 @@
     "levelup": "^1.3.1",
     "lodash": "^4.11.2",
     "main-loop": "^3.2.0",
-    "normalize.css.js": "^1.0.0",
+    "normalize.css": "^5.0.0",
     "rgb-hex": "^1.0.0",
     "scriptsp": "^1.0.1",
     "seed-random": "^2.2.0",
