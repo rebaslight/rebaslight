@@ -1,4 +1,8 @@
 # rebaslight
+
+[![unix build status](https://api.travis-ci.org/rebaslight/rebaslight.svg)](https://travis-ci.org/rebaslight/rebaslight)
+[![windows build status](https://ci.appveyor.com/api/projects/status/g0d8vni9bnvc58wj?svg=true)](https://ci.appveyor.com/project/farskipper/rebaslight)
+
 Rebaslight - an easy to use special effects editor
 
 [Download/Install](http://www.rebaslight.com/#download)
