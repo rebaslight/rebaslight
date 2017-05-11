@@ -1,6 +1,6 @@
 {
   "name": "rebaslight",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "private": true,
   "description": "Rebaslight - an easy to use special effects editor",
   "repository": "git@github.com:rebaslight/rebaslight.git",
@@ -48,8 +48,7 @@
         "tar.xz"
       ]
     },
-    "nsis": {
-    }
+    "nsis": {}
   },
   "scripts": {
     "postinstall": "install-app-deps",
