@@ -26,7 +26,24 @@ var css = jsCSS({
         "color": S.color.link_highlight
       }
     }
-  }
+  },
+  "div.$alert": {
+    cursor: "pointer",
+    background: "#f2dede",
+    margin: "50px 0 0 0",
+    padding: "10px",
+    "border-radius": "10px",
+    color: "#a94442",
+    border: "1px solid #ebccd1",
+    "a.$link": {
+      "color": "#2525f4",
+      "text-decoration": "none",
+      ":hover": {
+        "color": "#5555f6",
+        "text-decoration": "underline"
+      }
+    },
+  },
 });
 
 module.exports = function(state){
@@ -63,6 +80,18 @@ module.exports = function(state){
       }) : null,
       title
     ]) : null,
-    body
+    body,
+    state.unlocked
+      ? h("span")
+      : h("div." + css.alert, {
+        "ev-click": bus.signal("UnlockModal-show"),
+      }, [
+        "To remove the TRIAL VERSION watermarks purchase the \"",
+        h("a." + css.link, {
+          href: "#",
+          "ev-click": bus.signal("UnlockModal-show"),
+        }, "Rebaslight user license"),
+        "\"",
+      ]),
   ]);
 };
