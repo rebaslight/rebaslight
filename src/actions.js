@@ -313,15 +313,69 @@ bus.on("start-the-export-process", function(){
     bus.emit("display-error", "Sorry, that export " + main_source.type + " is not yet supported");
     return;
   }
+  var startExport = function(){
+      vdomHB.update({
+        show_ExportModal: false,
+        waiting_progress_bars: _.assign({
+          EXPORTING: {text: "Exporting " + main_source.type + "..."}
+        }, vdomHB.readState().waiting_progress_bars)
+      });
 
-  vdomHB.update({
-    show_ExportModal: false,
-    waiting_progress_bars: _.assign({
-      EXPORTING: {text: "Exporting " + main_source.type + "..."}
-    }, vdomHB.readState().waiting_progress_bars)
+      Export[main_source.type](main_source, layers, state.unlocked);//Exodus 20:15-16
+  };
+
+  if(!main_source.export_file_path){
+    bus.emit("display-error", "Error, no export file selected");
+    return;
+  }
+  RLBrowser.doesFileExist(main_source.export_file_path, function(err, does_exists){
+    if(err){
+      bus.emit("display-error", err);
+      return;
+    }
+    if(!does_exists){
+      startExport();
+      return;
+    }
+    bus.emit("push-generic_modal_q", {
+      title: "Are you sure you want to overwrite?",
+      body: "Do you really want to overwrite:\n\n"
+          + main_source.export_file_path + "\n\n"
+          + "NOTE: This cannot be undone.",
+      onClose: bus.signal("pop-generic_modal_q"),
+      buttons: [
+        {
+          text: "No, I'll save it somewhere else",
+          onClick: function(){
+            bus.emit("pick-export_file_path", main_source.export_file_path);
+            bus.emit("pop-generic_modal_q");
+          }
+        },
+        {
+          text: "Yes, I want to overwrite it",
+          onClick: function(){
+            startExport();
+            bus.emit("pop-generic_modal_q");
+          }
+        },
+      ]
+    });
   });
+});
 
-  Export[main_source.type](main_source, layers, state.unlocked);//Exodus 20:15-16
+bus.on("pick-export_file_path", function(default_path){
+  RLBrowser.showSaveDialog({
+    title: "Save video",
+    defaultPath: default_path,
+  }, function(err, file_path){
+    if(!/\.mp4$/.test(file_path)){
+      bus.emit("display-error", "Only .mp4 export files are supported");
+      return;
+    }
+    bus.emit("set-main-source-info", {
+      export_file_path: file_path
+    });
+  });
 });
 
 bus.on("clear-exported_image_download_url", function(){

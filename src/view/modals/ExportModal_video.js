@@ -4,7 +4,7 @@ var bus = require("../../event-bus");
 var path = require("path");
 var Fact = require("../Fact");
 var Select = require('../inputs/Select');
-var SaveFileInput = require("../inputs/SaveFileInput");
+var css_vars = require("../common_css");
 var ffmpeg_presets = require('../../ffmpeg-presets');
 
 var onPresetChange = function(preset){
@@ -34,18 +34,12 @@ module.exports = function(main_source){
       marginTop: "1em"
     }
   }, [
-    Fact("File", SaveFileInput({
-      curr_file: export_file_path,
-      onFileChanged: function(file_path){
-        if(!/\.mp4$/.test(file_path)){
-          bus.emit("display-error", "Only .mp4 export files are supported");
-          return;
-        }
-        bus.emit("set-main-source-info", {
-          export_file_path: file_path
-        });
-      }
-    })),
+    Fact("File", h("a." + css_vars.link, {
+      href: "#",
+      "ev-click": bus.signal("pick-export_file_path", export_file_path),
+    }, [
+      path.basename(export_file_path)
+    ])),
     Fact("Type", "Video"),
     Fact("Format", Select({
       options: _.map(ffmpeg_presets, function(preset, key){

@@ -1,3 +1,4 @@
+var fs = require("fs");
 var electron = require("electron");
 var ipcRenderer = electron.ipcRenderer;
 
@@ -61,6 +62,19 @@ window.REBASLIGHT_BROWSER = {
     load: function(callback){
       rpcRead(null, callback);
     }
+  },
+  doesFileExist: function(file_path, callback){
+    fs.open(file_path, "wx", function(err, fd){
+      if(err){
+        if(err.code === "EEXIST"){
+          callback(null, true);
+          return;
+        }
+        callback(err);
+        return;
+      }
+      fs.close(fd, callback);
+    });
   },
   Exporter: function(opts){
     ipcRenderer.on("ffmpeg-stopped", function(event, code){
