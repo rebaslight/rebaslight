@@ -49,7 +49,6 @@
       ]
     },
     "nsis": {
-      "unicode": false
     }
   },
   "scripts": {
