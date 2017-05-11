@@ -58,6 +58,9 @@ var renderModal = function(state){
   if(!state.current_project){
     return OpenProject(state);
   }
+  if(state.UnlockModal){
+    return UnlockModal(state);
+  }
   if(state.show_ExportModal){
     return ExportModal(state);
   }
@@ -68,9 +71,6 @@ var renderModal = function(state){
     return AboutModal({
       onClose: bus.signal("hide-about-modal")
     });
-  }
-  if(state.UnlockModal){
-    return UnlockModal(state);
   }
   if(state.video_player_modal
       && state.video_player_modal.file_path){
