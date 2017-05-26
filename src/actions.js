@@ -324,6 +324,11 @@ bus.on("start-the-export-process", function(){
       Export[main_source.type](main_source, layers, state.unlocked);//Exodus 20:15-16
   };
 
+  if(main_source.type === "image"){
+      startExport();
+      return;//don't need to check export_file_path
+  }
+
   if(!main_source.export_file_path){
     bus.emit("display-error", "Error, no export file selected");
     return;
