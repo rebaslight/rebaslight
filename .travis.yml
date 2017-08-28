@@ -1,37 +1,31 @@
-osx_image: xcode7.3
+osx_image: xcode8.3
 
 dist: trusty
 sudo: false
 
-language: c
+language: node_js
+node_js: "8"
 
-matrix:
-  include:
-    - os: osx
-    - os: linux
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
+os:
+  - linux
+  - osx
 
 addons:
   apt:
     packages:
-      - libgnome-keyring-dev
-      - icnsutils
+      - libsecret-1-0
 
 before_install:
-  - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.5.5/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-1.5.5.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v2.2.0/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-2.2.0.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
+  - curl -L https://yarnpkg.com/latest.tar.gz | tar xvz && mv dist $HOME/.yarn
   - export PATH="$HOME/.yarn/bin:$PATH"
 
 install:
-- nvm install 7
-- yarn install
-- wget https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins-unix.tar.xz
-- tar xf ffmpeg-bins-unix.tar.xz
-- mv ffmpeg-bins-unix ffmpeg-bins
+  - yarn
 
 script:
-- yarn run release
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn release; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yarn release -- --mac --win; fi
 
 branches:
   except:
