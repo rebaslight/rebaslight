@@ -56,10 +56,10 @@
     "run": "NODE_ENV=development electron ./app",
     "watch": "NODE_ENV=development webpack --watch",
     "test": "node src/tests.js",
-    "pack": "build --dir",
+    "pack": "electron-builder --dir",
     "webpack": "webpack",
-    "dist": "build --x64 --ia32",
-    "release": "webpack && build"
+    "dist": "electron-builder --x64 --ia32",
+    "release": "webpack && electron-builder"
   },
   "devDependencies": {
     "contra": "^1.9.1",

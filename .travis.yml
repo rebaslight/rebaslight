@@ -22,11 +22,10 @@ before_install:
 
 install:
   - yarn
+  - wget https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins-unix.tar.xz
+  - tar xf ffmpeg-bins-unix.tar.xz
+  - mv ffmpeg-bins-unix ffmpeg-bins
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn release; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then yarn release -- --mac --win; fi
-
-branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
