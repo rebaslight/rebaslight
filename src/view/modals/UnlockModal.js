@@ -101,8 +101,11 @@ module.exports = function(state){
     h("p", [
       "Thank you for trying Rebaslight."
     ]),
-    h("p", [
-      "If you like Rebaslight please purchase the \"Rebaslight user license.\"",
+    h("p", {style: {lineHeight: "1.4"}}, [
+      "To get full-access to Rebaslight forever, please purchase the ",
+      h("b", {style: {fontFamily: "monospace"}}, ["$25"]),
+      " \"Rebaslight user license.\" (one per user)",
+      " Full-access forever means you automatically get new versions and/or effects at no additional cost.",
     ]),
     h("p", [
       h("a", {
@@ -116,14 +119,10 @@ module.exports = function(state){
       ])
     ]),
     h("div", [
-      "If you:",
-    ]),
-    h("ul", {style: {marginTop: "5px"}}, [
-        h("li", ["purchased the \"Rebaslight user license\" *"]),
-        h("li", [
-          "and agree to the ",
-          h("a." + css_vars.link, {href: license_url}, "License Agreement")
-        ]),
+      "If you agree to ",
+      h("a." + css_vars.link, {href: license_url}, "License Agreement"),
+      " and purchased the \"Rebaslight user license.\" ",
+      h("span", {style: {color: "#ccc"}}, ["*"]),
     ]),
     h("p", [
       "Then sign here",
