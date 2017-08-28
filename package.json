@@ -45,7 +45,7 @@
       "target": [
         "AppImage",
         "deb",
-        "tar.xz"
+        "tar.bz2"
       ]
     },
     "nsis": {}
