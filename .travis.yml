@@ -1,6 +1,6 @@
 osx_image: xcode8.3
 
-dist: trusty
+dist: precise
 sudo: false
 
 language: node_js
