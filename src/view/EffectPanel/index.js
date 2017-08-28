@@ -12,13 +12,7 @@ var css = jsCSS({
     "margin-bottom": "1.5em",
     "border-bottom": "1px solid " + S.color.border_highlight,
     "padding-bottom": ".25em",
-    ":hover": {
-      ".$delete_btn": {
-        "display": "inline"
-      }
-    },
     ".$delete_btn": {
-      "display": "none",
       "cursor": "pointer",
       "float": "right",
       "color": S.color.link_color,
