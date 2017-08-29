@@ -9,6 +9,7 @@ var prevDflt = require("wrap-prevent-default");
 var css_vars = require("../common_css");
 
 var license_url = "https://github.com/rebaslight/rebaslight/blob/master/LICENSE.md";
+var buy_now_img = require("../../img/btn_buynowCC_LG.gif");
 
 var css = jsCSS({
   "input.$text-input": {
@@ -113,8 +114,9 @@ module.exports = function(state){
         _target: "blank"
       }, [
         h("img", {
-          src: "https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif",
-          alt: "Buy Now"
+          src: buy_now_img,
+          alt: "Buy Now",
+          style: {marginLeft: "1rem"}
         })
       ])
     ]),

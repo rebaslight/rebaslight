@@ -29,7 +29,7 @@ var conf = {
                 ]
             },
             {
-                test: /\.(png|jpg|otf|eot|svg|ttf|woff|woff2)(\?.*)?$/i,
+                test: /\.(png|jpg|gif|otf|eot|svg|ttf|woff|woff2)(\?.*)?$/i,
                 use: [
                     {loader: "url-loader"},
                 ]
