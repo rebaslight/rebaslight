@@ -22,9 +22,8 @@ before_install:
 
 install:
   - yarn
-  - wget https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins-unix.tar.xz
-  - tar xf ffmpeg-bins-unix.tar.xz
-  - mv ffmpeg-bins-unix ffmpeg-bins
+  - wget https://s3.amazonaws.com/rebaslight/build/ffmpeg-bins.tar.xz
+  - tar xf ffmpeg-bins.tar.xz
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then yarn release; fi
