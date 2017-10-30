@@ -1,6 +1,6 @@
 {
   "name": "rebaslight",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "private": true,
   "description": "Rebaslight - an easy to use special effects editor",
   "repository": "git@github.com:rebaslight/rebaslight.git",
@@ -51,7 +51,7 @@
     "nsis": {}
   },
   "scripts": {
-    "postinstall": "install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "start": "scriptsp --raw run watch",
     "run": "NODE_ENV=development electron ./app",
     "watch": "NODE_ENV=development webpack --watch",
@@ -59,15 +59,15 @@
     "pack": "electron-builder --dir",
     "webpack": "webpack",
     "dist": "electron-builder --x64 --ia32",
-    "release": "webpack && electron-builder"
+    "release": "webpack && electron-builder --x64 --ia32"
   },
   "devDependencies": {
     "contra": "^1.9.1",
     "css-loader": "^0.28.1",
     "cuid": "^1.3.8",
     "dom-delegator": "^13.1.0",
-    "electron": "1.7.5",
-    "electron-builder": "19.26.3",
+    "electron": "1.7.9",
+    "electron-builder": "19.43.0",
     "eslint": "^4.5.0",
     "eslint-loader": "^1.6.1",
     "font-awesome": "^4.7.0",
@@ -83,9 +83,9 @@
     "scriptsp": "^1.0.1",
     "seed-random": "^2.2.0",
     "semver": "^5.1.0",
-    "style-loader": "^0.18.1",
+    "style-loader": "^0.19.0",
     "tape": "^4.6.3",
-    "url-loader": "^0.5.7",
+    "url-loader": "^0.6.2",
     "virtual-dom": "^2.1.1",
     "virtual-dom-absolute-layout": "^1.0.0",
     "virtual-dom-closure-widget": "^1.0.0",
