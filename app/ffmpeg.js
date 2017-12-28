@@ -83,8 +83,9 @@ ipcMain.on("ffmpeg-convert", function(event, opts){
   //output settings
   //https://trac.ffmpeg.org/wiki/Encode/VP8
   cli_args.push(['-c:v', 'libvpx']);
-  //cli_args.push(['-qmin', '0', '-qmax', '50']);
-  cli_args.push(['-crf', '5']);//By default the CRF value can be from 4–63, and 10 is a good starting point. Lower values mean better quality.
+  cli_args.push(['-qmin', '0']);
+  cli_args.push(['-qmax', '40']);
+  cli_args.push(['-crf', '4']);//By default the CRF value can be from 4–63, and 10 is a good starting point. Lower values mean better quality.
   cli_args.push(['-b:v', '2M']);//Choose a higher bit rate if you want better quality. Note that you shouldn't leave out the -b:v option as the default settings will produce mediocre quality output
   cli_args.push(['-c:a', 'libvorbis']);
   cli_args.push(opts.output_file);
