@@ -3,6 +3,8 @@ var h = require("virtual-dom/h");
 var S = require("../styles");
 var bus = require("../../event-bus");
 var Modal = require("./Modal");
+var css_vars = require("../common_css");
+var prevDflt = require("wrap-prevent-default");
 var Progress = require("./Progress");
 var OpenProject = require("./OpenProject");
 var OpenMainSource = require("./OpenMainSource");
@@ -36,7 +38,38 @@ var ErrorModal = function(msg){
   return Modal({
     title: "Error!",
     onClose: bus.signal("pop-error_message_q")
-  }, h("div", {style: {whiteSpace: "pre-line"}}, msg.context_msg));
+  }, h("div", [
+    h("div", {style: {whiteSpace: "pre-line"}}, msg.context_msg),
+    msg.clipboard_text
+      ? h("div", {style: {marginTop: "1em"}}, [
+        h("div", "Here is the complete output. You can copy it and send it to support@rebaslight.com for help."),
+        h("textarea", {
+          readOnly: "readonly",
+          rows: 3,
+          style: {width: "98%"},
+          "ev-click": prevDflt(function(ev){
+            ev.target.focus();
+            ev.target.select();
+          }),
+        }, msg.clipboard_text),
+        h("a." + css_vars.link, {
+          href: "#",
+          "ev-click": prevDflt(function(ev){
+            var div = ev.target.parentElement;
+            var ta = div.getElementsByTagName("TEXTAREA")[0];
+            ta.focus();
+            ta.select();
+            document.execCommand("copy");
+            var span = document.createElement("B");
+            span.innerHTML = "copied!";
+            span.style.color = "#48de48";
+            span.style.marginLeft = "1em";
+            div.appendChild(span);
+          }),
+        }, ["copy to clipboard"]),
+      ])
+      : null,
+  ]));
 };
 
 var renderModal = function(state){

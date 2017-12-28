@@ -14,11 +14,13 @@ var closeProgressBar = function(){
   });
 };
 
+var ffmpeg_output = "";
+
 var onStopped = function(code){
   is_running = false;
   closeProgressBar();
   if(code !== 0){
-    bus.emit("display-error", "Failed to export: " + code);
+    bus.emit("display-error", "Failed to export: " + code, void 0, ffmpeg_output);
     //TODO delete the file?
   }else{
     bus.emit("export-finished-successfully");
@@ -35,6 +37,7 @@ var onStatus = function(line){
   if(parts && (_.size(parts) > 1)){
     last_frame_from_ffmpeg = _.parseInt(parts[1], 10);
   }else{
+    ffmpeg_output += line + "\n";
     console.log("[FFMPEG-status]", line);//eslint-disable-line no-console
   }
 };
@@ -70,6 +73,7 @@ module.exports = function(main_source, layers, unlocked){
     bus.emit("show-ExportModal");
     return;
   }
+  ffmpeg_output = "";
   exporter.start({
     preset: _.has(ffmpeg_presets, main_source.ffmpeg_preset)
       ? main_source.ffmpeg_preset

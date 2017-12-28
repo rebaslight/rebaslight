@@ -475,7 +475,7 @@ bus.on("pop-error_message_q", function(){
 bus.on("show-bad-browser-message", function(){
   bus.emit("display-error", "Looks like your web browser is out of date. Try using Google Chrome.");
 });
-bus.on("display-error", function(context_msg, error){
+bus.on("display-error", function(context_msg, error, clipboard_text){
   if(/OUTDATED_BROWSER/.test("" + error)){
     bus.emit("show-bad-browser-message");
     return;
@@ -483,6 +483,7 @@ bus.on("display-error", function(context_msg, error){
   vdomHB.update({
     error_message_q: _.flattenDeep([vdomHB.readState().error_message_q, {
       context_msg: context_msg,
+      clipboard_text: clipboard_text,
       error: error
     }])
   });
