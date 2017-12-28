@@ -110,7 +110,7 @@ module.exports = function(state){
     ]),
     h("p", [
       h("a", {
-        href: "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JB9JVER43JHE2",
+        href: "http://www.rebaslight.com/buy.html",
         _target: "blank"
       }, [
         h("img", {

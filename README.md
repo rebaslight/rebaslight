@@ -18,4 +18,4 @@ If you purchased the "Rebaslight user license" or purchased a Rebaslight effect 
 
 Neither license grants you permission to use the Rebaslight name, logo, or brand.
 
-[![Buy Now](https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JB9JVER43JHE2)
+[![Buy Now](https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif)](http://www.rebaslight.com/buy.html)

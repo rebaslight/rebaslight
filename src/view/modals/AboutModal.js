@@ -9,8 +9,7 @@ module.exports = function(props){
   }, h("div", [
     h("h3", "Rebaslight"),
     h("p", [
-      "(C) Small Helm LLC ",
-      (new Date()).getFullYear()
+      "Copyright (c) 2017 Small Helm LLC",
     ]),
     h("p", [
       h("a." + css_vars.link, {
