@@ -204,6 +204,33 @@ bus.on("show_OpenMainSource", function(){
     show_OpenMainSource: true
   });
 });
+bus.on("change-main-source", function(){
+  bus.emit("push-generic_modal_q", {
+    title: "Are you sure?",
+    body: "Do you really want to change the main source file? Changing it may cause the frames and edits to not line up.",
+    onClose: bus.signal("pop-generic_modal_q"),
+    buttons: [
+      {
+        text: "No, don't change it",
+        onClick: bus.signal("pop-generic_modal_q"),
+      },
+      {
+        text: "Yes, I want to change it",
+        onClick: function(){
+          bus.emit("pop-generic_modal_q");
+          bus.emit("show_OpenMainSource");
+        }
+      },
+      {
+        text: "Open a new project instead",
+        onClick: function(){
+          bus.emit("pop-generic_modal_q");
+          bus.emit("new-project");
+        }
+      },
+    ]
+  });
+});
 bus.on("hide_OpenMainSource", function(){
   vdomHB.update({
     show_OpenMainSource: false

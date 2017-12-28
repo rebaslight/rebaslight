@@ -27,7 +27,7 @@ module.exports = function(main_source){
   }
 
   return h("div", [
-    h("h3", [
+    h("h3", {"ev-click": bus.signal("change-main-source")}, [
       FileTypeIcon(main_source.type),
       " ",
       main_source.name
