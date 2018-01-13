@@ -9,7 +9,7 @@ module.exports = function(props){
   }, h("div", [
     h("h3", "Rebaslight"),
     h("p", [
-      "Copyright (c) 2017 Small Helm LLC",
+      "Copyright (c) 2018 Very Small Helm LLC",
     ]),
     h("p", [
       h("a." + css_vars.link, {

@@ -35,20 +35,13 @@ module.exports = function(ctx, main_source, layers, frame_n, unlocked){
 
   if(!unlocked){
     //Exodus 20:15-16
-    var h = main_source.frame_h;
-    var font_size = Math.max(10, flatInt(main_source.frame_w * .03));
-    var txt = [
-      "Rebaslight Trial Version",
-      "Rebaslight Trial Version",
-      "Rebaslight Trial Version",
-      "Rebaslight Trial Version",
-      "Rebaslight Trial Version",
-      "Rebaslight Trial Version",
-    ].join("    -    ");
+    var font_size = Math.max(10, flatInt(main_source.frame_w * .05));
+    var txt = "Rebaslight Trial Version";
 
     ctx.font = font_size + "px sans-serif";
-    ctx.fillStyle = "#EEE";
+    var txt_w = flatInt(ctx.measureText(txt).width);
+    ctx.fillStyle = "rgba(255, 255, 255, .7)";
     ctx.fillText(txt, 0, font_size);
-    ctx.fillText(txt, 0, h - font_size);
+    ctx.fillText(txt, main_source.frame_w - txt_w, main_source.frame_h - font_size);
   }
 };

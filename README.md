@@ -1,4 +1,4 @@
-# rebaslight
+# Rebaslight
 
 [![build status](https://api.travis-ci.org/rebaslight/rebaslight.svg)](https://travis-ci.org/rebaslight/rebaslight)
 
@@ -8,7 +8,7 @@ Rebaslight - an easy to use special effects editor
 
 ## License
 
-Copyright (c) 2017 Small Helm LLC. All Rights Reserved.
+Copyright (c) 2018 Very Small Helm LLC. All Rights Reserved.
 
 Rebaslight is dual-licensed.
 
@@ -18,4 +18,4 @@ If you purchased the "Rebaslight user license" or purchased a Rebaslight effect 
 
 Neither license grants you permission to use the Rebaslight name, logo, or brand.
 
-[![Buy Now](https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif)](http://www.rebaslight.com/buy.html)
+Purchase at [buy.rebaslight.com](https://buy.rebaslight.com/)

@@ -1,8 +1,8 @@
 # Trial License Agreement ("Agreement")
 
-Last Updated: February 15, 2017
+Last Updated: January 12, 2018
 
-Small Helm LLC ("Company") grants you a revocable, non-exclusive, non-transferable, limited license to download, install and use Rebaslight solely for your personal, non-commercial purposes strictly in accordance with the terms of this Agreement. The failure of the Company to exercise or enforce any right or provision of the Agreement shall not constitute a waiver of such right or provision.
+Very Small Helm LLC ("Company") grants you a revocable, non-exclusive, non-transferable, limited license to download, install and use Rebaslight solely for your personal, non-commercial purposes strictly in accordance with the terms of this Agreement. The failure of the Company to exercise or enforce any right or provision of the Agreement shall not constitute a waiver of such right or provision.
 
 ## Restrictions
 
@@ -12,7 +12,7 @@ You agree not to, and you will not permit others to:
 
 ## Intellectual Property
 
-This Agreement does not transfer any Small Helm LLC or third party intellectual property to you.
+This Agreement does not transfer any Very Small Helm LLC or third party intellectual property to you.
 
 ## Disclaimer of Warranty
 
@@ -25,7 +25,7 @@ PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF
 
 ## Indemnification
 
-You agree to indemnify and hold harmless Small Helm LLC and its owners, officers, employees, affiliates, agents, partners and directors from and against any and all claims and expenses, including attorneys' fees, arising out of your use of the Rebaslight, including but not limited to your violation of this Agreement.
+You agree to indemnify and hold harmless Very Small Helm LLC and its owners, officers, employees, affiliates, agents, partners and directors from and against any and all claims and expenses, including attorneys' fees, arising out of your use of the Rebaslight, including but not limited to your violation of this Agreement.
 
 ## Contact Us
 

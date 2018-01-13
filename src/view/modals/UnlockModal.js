@@ -9,7 +9,7 @@ var prevDflt = require("wrap-prevent-default");
 var css_vars = require("../common_css");
 
 var license_url = "https://github.com/rebaslight/rebaslight/blob/master/LICENSE.md";
-var buy_now_img = require("../../img/btn_buynowCC_LG.gif");
+var buy_now_img = require("../../img/buy-now.png");
 
 var css = jsCSS({
   "input.$text-input": {
@@ -105,29 +105,28 @@ module.exports = function(state){
     h("p", {style: {lineHeight: "1.4"}}, [
       "To get full-access to Rebaslight forever, please purchase the ",
       h("b", {style: {fontFamily: "monospace"}}, ["$25"]),
-      " \"Rebaslight user license.\" (one per user)",
+      " \"Rebaslight user license\" (one per user).",
       " Full-access forever means you automatically get new versions and/or effects at no additional cost.",
+      " For more info see the ",
+      h("a." + css_vars.link, {href: license_url}, "License Agreement"),
+      ".",
     ]),
-    h("p", [
-      h("a", {
-        href: "http://www.rebaslight.com/buy.html",
+    h("p", {
+        style: {margin: "1.5rem 0"},
+    }, [
+      h("a." + css_vars.link, {
+        href: "https://buy.rebaslight.com/",
         _target: "blank"
       }, [
         h("img", {
           src: buy_now_img,
-          alt: "Buy Now",
+          alt: "buy.rebaslight.com",
           style: {marginLeft: "1rem"}
         })
       ])
     ]),
-    h("div", [
-      "If you agree to ",
-      h("a." + css_vars.link, {href: license_url}, "License Agreement"),
-      " and purchased the \"Rebaslight user license.\" ",
-      h("span", {style: {color: "#ccc"}}, ["*"]),
-    ]),
     h("p", [
-      "Then sign here",
+      "If you purchased the license, then sign here:",
     ]),
     h("div", [
       h("table", {style: {width: "100%"}}, [
@@ -168,6 +167,5 @@ module.exports = function(state){
         }
       }, "Nevermind, stay in trial mode")
     ]),
-    h("div", {style: {color: "#ccc"}}, ["* or purchased a Rebaslight effect previously"]),
   ]));
 };
