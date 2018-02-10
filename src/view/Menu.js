@@ -31,6 +31,7 @@ var css_vars = jsCSS({
     "display": "block",
     "padding": ".25em 1em",
     "text-decoration": "none",
+    "white-space": "nowrap",
     "&:hover": {
       "background-color": S.color.highlight+" !important"
     }

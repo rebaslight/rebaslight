@@ -9,8 +9,8 @@ var getTimelineHeight = require("../getTimelineHeight");
 var getNFramesForProject = require("../getNFramesForProject");
 
 var layer_height = 40;
-var frame_border = 2;
-var frame_width = 7;
+var frame_border = 1;
+var frame_width = 6;
 var frames_left_spacing = 20;
 var handle_width = S.sizes.left_panels + S.sizes.divider;
 var frame_height = layer_height/2;
@@ -25,7 +25,13 @@ var css = jsCSS({
     width: (frame_width - frame_border) + "px",
     height: frame_height + "px",
     "margin-top": (layer_height/2 - (frame_height/2) - frame_border) + "px",
-    "border-width": frame_border+"px "+(frame_border/2)+"px",
+
+    "border-width": frame_border+"px",
+    "border-right-width": "0px",
+    "&:last-child": {
+      "border-right-width": frame_border+"px",
+    },
+
     "border-style": "solid",
     "border-color": "#717171",
     "&.$is_keyframe": {
@@ -45,9 +51,9 @@ var LayerFrames = function(first_visible_frame, last_visible_frame, selected, ke
       height: layer_height + "px",
       whiteSpace: "nowrap",
       paddingLeft: ((first_visible_frame * frame_width) + frames_left_spacing) + "px",
-      borderBottom: "1px solid black"
+      borderBottom: "1px solid " + S.color.border,
     }
-  }, _.map(_.range(first_visible_frame, last_visible_frame), function(i){
+  }, _.map(_.range(first_visible_frame, last_visible_frame + 1), function(i){
     return Frame(_.has(keyframe_points, i));
   }));
 };
@@ -65,7 +71,7 @@ var LayerHandle = function(id, name, selected){
       lineHeight: layer_height + "px",
       background: selected ? S.color.selected_bg : undefined,
       textOverflow: "ellipsis",
-      borderBottom: "1px solid black"
+      borderBottom: "1px solid " + S.color.border,
     }
   }, [
     h("div", {
@@ -154,11 +160,11 @@ module.exports = function(state){
         style: {
           position: "absolute",
           top: 0,
-          left: (frames_left_spacing + (frame_n * frame_width)) + "px",
-          width: frame_width + "px",
+          left: (frames_left_spacing + (frame_n * frame_width) + frame_border) + "px",
+          width: (frame_width - frame_border) + "px",
           bottom: 0,
           background: "black",
-          opacity: .5
+          opacity: .4
         }
       }),
       _.map(layers, function(layer){
