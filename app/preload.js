@@ -1,4 +1,5 @@
 var fs = require("fs");
+var URL = require("url").URL;
 var electron = require("electron");
 var ipcRenderer = electron.ipcRenderer;
 
@@ -62,6 +63,9 @@ window.REBASLIGHT_BROWSER = {
     load: function(callback){
       rpcRead(null, callback);
     }
+  },
+  inputFileURLExists: function(file_url, callback){
+      fs.access(new URL(file_url), fs.constants.R_OK, callback);
   },
   doesFileExist: function(file_path, callback){
     fs.open(file_path, "wx", function(err, fd){

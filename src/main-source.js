@@ -1,7 +1,9 @@
+var h = require("virtual-dom/h");
 var bus = require("./event-bus");
 var flatInt = require("./flatInt");
 var FrameMath = require("./frame-math");
 var frameMath = FrameMath(25);
+var RLBrowser = require("./RLBrowser");
 var createVideoElement = require("./create-video-element");
 var createImageElement = require("./create-image-element");
 var toInt = function(n){
@@ -52,7 +54,15 @@ var mount = function(main_source, callback){
   }else{
     tmp = createVideoElement(main_source.url, {
       onError: function(ev){
-        callback(new Error("Failed to mount video"));
+        RLBrowser.inputFileURLExists(main_source.url, function(err){
+            if(err){
+                err = new Error("File does not exist");
+                err.notFound = true;
+                callback(err);
+                return;
+            }
+            callback(new Error("Failed to mount video"));
+        });
         tmp.destroy();
       },
       onMounted: function(videoELM){
@@ -99,6 +109,25 @@ module.exports = {
       bus.emit("main-source-done-loading");
       if(err){
         if(type === "video"){
+          if(err.notFound){
+              bus.emit("push-generic_modal_q", {
+                title: "Failed to load video",
+                body: h("div", [
+                  h("p", ["File not found: ", h("b", name)]),
+                  h("p", "Did it move to a new location? Or was it from a camera or device that is no longer attached?"),
+                ]),
+                buttons: [
+                  {
+                    onClick: function(){
+                      bus.emit("show_OpenMainSource");
+                      bus.emit("pop-generic_modal_q");
+                    },
+                    text: "Find it again"
+                  }
+                ]
+              });
+              return;
+          }
           bus.emit("push-generic_modal_q", {
             title: "Failed to load video",
             body: "Failed to load video \"" + name + "\"\n",

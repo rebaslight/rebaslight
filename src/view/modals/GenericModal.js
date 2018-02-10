@@ -19,9 +19,8 @@ module.exports = function(props){
     buttons: _.map(buttons, function(btn){
       return Button({"ev-click": prevDflt(btn.onClick)}, btn.text);
     })
-  }, h("p", {
-    style: _.isString(body)
-      ? {whiteSpace: "pre-line"}
-      : null
-  }, body));
+  }, _.isString(body)
+    ? h("p", {style: {whiteSpace: "pre-line"}}, body)
+    : body
+  );
 };
