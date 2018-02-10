@@ -78,6 +78,8 @@ module.exports = function(main_source, layers, unlocked){
     preset: _.has(ffmpeg_presets, main_source.ffmpeg_preset)
       ? main_source.ffmpeg_preset
       : _.head(_.keys(ffmpeg_presets)),
+    frame_w: main_source.frame_w,
+    frame_h: main_source.frame_h,
     audio_file_path: main_source.file_path,
     export_file_path: main_source.export_file_path
   });

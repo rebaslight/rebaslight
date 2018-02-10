@@ -1,4 +1,5 @@
 var bus = require("./event-bus");
+var flatInt = require("./flatInt");
 var FrameMath = require("./frame-math");
 var frameMath = FrameMath(25);
 var createVideoElement = require("./create-video-element");
@@ -55,9 +56,20 @@ var mount = function(main_source, callback){
         tmp.destroy();
       },
       onMounted: function(videoELM){
+        var w = flatInt(videoELM.videoWidth);
+        var h = flatInt(videoELM.videoHeight);
+
+        // The dimensions need to be even for exporting to work
+        if(w % 2 !== 0){
+            w -= 1;
+        }
+        if(h % 2 !== 0){
+            h -= 1;
+        }
+
         bus.emit("set-main-source-info", {
-          frame_w: videoELM.videoWidth,
-          frame_h: videoELM.videoHeight,
+          frame_w: w,
+          frame_h: h,
           //TODO use seek ranges instead
           n_frames: Math.max(1, frameMath.secondsToFrame((videoELM.duration) || 0))
         });

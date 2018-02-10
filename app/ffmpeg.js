@@ -28,14 +28,19 @@ ipcMain.on("ffmpeg-start", function(event, opts){
   //frames input
   cli_args.push(['-f', 'image2pipe']);
   cli_args.push(['-framerate', '25']);
+  cli_args.push(['-s', opts.frame_w + 'x' + opts.frame_h]);
   cli_args.push(['-c:v', 'png']);
   cli_args.push(['-i', '-']);
 
   //audio input
+  cli_args.push(['-vn']);// disable video
   cli_args.push(['-i', opts.audio_file_path]);
 
   //output settings
+  cli_args.push(['-map', '0:v']);// use the video from input 0
+  cli_args.push(['-map', '1:a']);// use the audio from input 1
   cli_args.push(['-framerate', '25']);
+  cli_args.push(['-s', opts.frame_w + 'x' + opts.frame_h]);
   cli_args.push(output_settings[opts.preset].args);
 
   //output file
