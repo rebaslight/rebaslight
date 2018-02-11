@@ -35,7 +35,17 @@ var css_vars = jsCSS({
     "&:hover": {
       "background-color": S.color.highlight+" !important"
     }
-  }
+  },
+  ".$MenuLabel": {
+    "color": S.color.text,
+    "background": S.color.dark_bg,
+    "text-decoration": "none",
+    "font-weight": "bold",
+    "border-radius": "10px",
+    "margin": "4px 10px 0 0",
+    "float": "right",
+    "padding": "1px 12px"
+  },
 });
 
 var MenuItemItem = function(props){
@@ -170,49 +180,23 @@ module.exports = function(state){
         is_open: id === currently_open_menu
       }, m));
     }),
-    h("a", {
-        href: toRlURL("/"),
-        style: {
-          color: S.color.text,
-          background: S.color.dark_bg,
-          textDecoration: "none",
-          fontWeight: "bold",
-          borderRadius: "10px",
-          margin: "0 0 0 10px",
-          padding: "1px 12px"
-        }
-      },
+    h("a." + css_vars.MenuLabel, {href: toRlURL("/")},
       "Rebaslight "
       + cur_v
       + (/^0/.test(cur_v) ? ' Beta' : '')
     ),
     state.unlocked
-      ? h("a", {
+      ? h("a." + css_vars.MenuLabel, {
           href: "#",
           "ev-click": bus.signal("UnlockModal-show"),
-          style: {
-            color: S.color.text,
-            background: S.color.dark_bg,
-            textDecoration: "none",
-            fontWeight: "bold",
-            borderRadius: "10px",
-            margin: "0 0 0 10px",
-            padding: "1px 12px"
-          }
         },
         "Thank You"
       )
-      : h("a", {
+      : h("a." + css_vars.MenuLabel, {
           href: "#",
           "ev-click": bus.signal("UnlockModal-show"),
           style: {
-            color: S.color.text,
             background: "#770000",
-            textDecoration: "none",
-            fontWeight: "bold",
-            borderRadius: "10px",
-            margin: "0 0 0 10px",
-            padding: "1px 12px"
           }
         },
         "TRIAL VERSION"

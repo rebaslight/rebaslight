@@ -103,7 +103,7 @@ module.exports = function(state){
       "Thank you for trying Rebaslight."
     ]),
     h("p", {style: {lineHeight: "1.4"}}, [
-      "To get full-access to Rebaslight forever, please purchase the ",
+      "To remove the watermarks and get full-access forever, please purchase the ",
       h("b", {style: {fontFamily: "monospace"}}, ["$25"]),
       " \"Rebaslight user license\" (one per user).",
       " Full-access forever means you automatically get new versions and/or effects at no additional cost.",
