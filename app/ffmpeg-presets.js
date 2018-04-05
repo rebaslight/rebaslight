@@ -21,4 +21,4 @@ module.exports = {
       '-codec:a', 'libmp3lame'
     ]
   }
-};
+}

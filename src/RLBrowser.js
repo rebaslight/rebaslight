@@ -1,1 +1,1 @@
-module.exports = window.REBASLIGHT_BROWSER || undefined;
+module.exports = window.REBASLIGHT_BROWSER || undefined

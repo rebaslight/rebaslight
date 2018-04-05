@@ -1,1 +1,1 @@
-require("./getNextNameInSequence.test");
+require('./getNextNameInSequence.test')

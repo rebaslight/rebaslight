@@ -1,5 +1,5 @@
-var h = require("virtual-dom/h");
+var h = require('virtual-dom/h')
 
-module.exports = function(){
-  return h("div", {style: {clear: "both"}});
-};
+module.exports = function () {
+  return h('div', {style: {clear: 'both'}})
+}

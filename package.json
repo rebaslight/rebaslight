@@ -55,7 +55,7 @@
     "start": "scriptsp --raw run watch",
     "run": "NODE_ENV=development electron ./app",
     "watch": "NODE_ENV=development webpack --watch",
-    "test": "node src/tests.js",
+    "test": "standardx && node src/tests.js",
     "pack": "electron-builder --dir",
     "webpack": "webpack",
     "dist": "electron-builder --x64 --ia32",
@@ -83,6 +83,7 @@
     "scriptsp": "^1.0.1",
     "seed-random": "^2.2.0",
     "semver": "^5.1.0",
+    "standardx": "^2.0.0",
     "style-loader": "^0.20.1",
     "tape": "^4.6.3",
     "url-loader": "^0.6.2",
@@ -93,5 +94,10 @@
     "wrap-prevent-default": "^1.0.0",
     "xhr": "^2.2.0",
     "xtend": "^4.0.1"
+  },
+  "eslintConfig": {
+    "rules": {
+      "camelcase": 0
+    }
   }
 }
