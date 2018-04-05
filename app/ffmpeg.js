@@ -38,7 +38,7 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
 
   // output settings
   args.push(['-map', '0:v'])// use the video from input 0
-  args.push(['-map', '1:a'])// use the audio from input 1
+  args.push(['-map', '1:a?'])// use the audio from input 1 if exists
   args.push(['-framerate', '25'])
   args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
   args.push(ffmpegPresets[opts.preset].args)
