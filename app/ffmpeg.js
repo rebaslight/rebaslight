@@ -2,9 +2,9 @@
 const path = require('path')
 const spawn = require('child_process').spawn
 const ipcMain = require('electron').ipcMain
-const output_settings = require('./ffmpeg-presets')
+const ffmpegPresets = require('./ffmpeg-presets')
 
-let ffmpeg_cmd_path = path.join(__dirname, '../../ffmpeg')
+const ffmpegPath = path.join(__dirname, '../../ffmpeg')
 
 let f
 
@@ -13,40 +13,40 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
     f.stdin.end()
     f = null
   }
-  if (!/ffmpeg(\.exe)?$/i.test(ffmpeg_cmd_path)) {
+  if (!/ffmpeg(\.exe)?$/i.test(ffmpegPath)) {
     return
   }
-  if (!output_settings.hasOwnProperty(opts.preset)) {
+  if (!ffmpegPresets.hasOwnProperty(opts.preset)) {
     event.sender.send('ffmpeg-error', 'Invalid export preset.')
     event.sender.send('ffmpeg-stopped', 1)
     return
   }
-  var cli_args = []
-  cli_args.push('-y')// overwrite files without asking
-  cli_args.push('-stats')
+  var args = []
+  args.push('-y')// overwrite files without asking
+  args.push('-stats')
 
   // frames input
-  cli_args.push(['-f', 'image2pipe'])
-  cli_args.push(['-framerate', '25'])
-  cli_args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
-  cli_args.push(['-c:v', 'png'])
-  cli_args.push(['-i', '-'])
+  args.push(['-f', 'image2pipe'])
+  args.push(['-framerate', '25'])
+  args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
+  args.push(['-c:v', 'png'])
+  args.push(['-i', '-'])
 
   // audio input
-  cli_args.push(['-vn'])// disable video
-  cli_args.push(['-i', opts.audio_file_path])
+  args.push(['-vn'])// disable video
+  args.push(['-i', opts.audio_file_path])
 
   // output settings
-  cli_args.push(['-map', '0:v'])// use the video from input 0
-  cli_args.push(['-map', '1:a'])// use the audio from input 1
-  cli_args.push(['-framerate', '25'])
-  cli_args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
-  cli_args.push(output_settings[opts.preset].args)
+  args.push(['-map', '0:v'])// use the video from input 0
+  args.push(['-map', '1:a'])// use the audio from input 1
+  args.push(['-framerate', '25'])
+  args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
+  args.push(ffmpegPresets[opts.preset].args)
 
   // output file
-  cli_args.push(opts.export_file_path)
+  args.push(opts.export_file_path)
 
-  f = spawn(ffmpeg_cmd_path, [].concat.apply([], cli_args))
+  f = spawn(ffmpegPath, [].concat.apply([], args))
   f.stdout.on('data', function (data) {
     // ffmpeg stdout does nothing
   })
@@ -60,12 +60,12 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
     event.sender.send('ffmpeg-stopped', code)
   })
 })
-ipcMain.on('ffmpeg-render-frame', function (event, base64_str) {
+ipcMain.on('ffmpeg-render-frame', function (event, base64str) {
   if (!f) {
     console.log('ERROR - called ffmpeg-render-frame before f is mounted')
     return
   }
-  f.stdin.write(Buffer.from(base64_str, 'base64'))
+  f.stdin.write(Buffer.from(base64str, 'base64'))
 })
 ipcMain.on('ffmpeg-stop', function (event) {
   if (f) {
@@ -75,27 +75,27 @@ ipcMain.on('ffmpeg-stop', function (event) {
 })
 
 ipcMain.on('ffmpeg-convert', function (event, opts) {
-  if (!/ffmpeg(\.exe)?$/i.test(ffmpeg_cmd_path)) {
+  if (!/ffmpeg(\.exe)?$/i.test(ffmpegPath)) {
     return
   }
-  var cli_args = []
-  cli_args.push('-y')// overwrite files without asking
-  cli_args.push('-stats')
+  var args = []
+  args.push('-y')// overwrite files without asking
+  args.push('-stats')
 
   // input settings
-  cli_args.push(['-i', opts.input_file])
+  args.push(['-i', opts.input_file])
 
   // output settings
   // https://trac.ffmpeg.org/wiki/Encode/VP8
-  cli_args.push(['-c:v', 'libvpx'])
-  cli_args.push(['-qmin', '0'])
-  cli_args.push(['-qmax', '40'])
-  cli_args.push(['-crf', '4'])// By default the CRF value can be from 4–63, and 10 is a good starting point. Lower values mean better quality.
-  cli_args.push(['-b:v', '2M'])// Choose a higher bit rate if you want better quality. Note that you shouldn't leave out the -b:v option as the default settings will produce mediocre quality output
-  cli_args.push(['-c:a', 'libvorbis'])
-  cli_args.push(opts.output_file)
+  args.push(['-c:v', 'libvpx'])
+  args.push(['-qmin', '0'])
+  args.push(['-qmax', '40'])
+  args.push(['-crf', '4'])// By default the CRF value can be from 4–63, and 10 is a good starting point. Lower values mean better quality.
+  args.push(['-b:v', '2M'])// Choose a higher bit rate if you want better quality. Note that you shouldn't leave out the -b:v option as the default settings will produce mediocre quality output
+  args.push(['-c:a', 'libvorbis'])
+  args.push(opts.output_file)
 
-  var proc = spawn(ffmpeg_cmd_path, [].concat.apply([], cli_args))
+  var proc = spawn(ffmpegPath, [].concat.apply([], args))
   proc.stdout.on('data', function (data) {
     // ffmpeg stdout does nothing
   })

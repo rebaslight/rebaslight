@@ -5,16 +5,16 @@ var electron = require('electron')
 var app = electron.app
 var ipcMain = electron.ipcMain
 
-var rl_home = path.join(app.getPath('home'), '.rebaslight')
-var projects3_json = path.join(rl_home, 'projects3.json')
+var rlHome = path.join(app.getPath('home'), '.rebaslight')
+var projectsJsonFile = path.join(rlHome, 'projects3.json')
 
 var save = function (data, callback) {
   var json = JSON.stringify(data)
-  fs.writeFile(projects3_json, json, function (err) {
+  fs.writeFile(projectsJsonFile, json, function (err) {
     if (err && err.code === 'ENOENT') {
-      fs.mkdir(rl_home, function (err) {
+      fs.mkdir(rlHome, function (err) {
         if (err) return callback(err)
-        fs.writeFile(projects3_json, json, callback)
+        fs.writeFile(projectsJsonFile, json, callback)
       })
     } else {
       callback(err)
@@ -23,7 +23,7 @@ var save = function (data, callback) {
 }
 
 var read = function (callback) {
-  fs.readFile(projects3_json, 'utf8', function (err, data) {
+  fs.readFile(projectsJsonFile, 'utf8', function (err, data) {
     if (err) {
       if (err.code === 'ENOENT' || err.code === 'ENOTDIR') {
         callback(null, {})

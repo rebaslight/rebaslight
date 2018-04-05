@@ -9,7 +9,7 @@ const Menu = electron.Menu
 const shell = electron.shell
 const BrowserWindow = electron.BrowserWindow
 
-const is_dev_mode = process.env.NODE_ENV === 'development'
+const isDevMode = process.env.NODE_ENV === 'development'
 
 let mainWindow
 
@@ -37,7 +37,7 @@ if (process.platform === 'darwin') {
 
 app.on('ready', function () {
   mainWindow = new BrowserWindow({
-    title: 'Rebaslight' + (is_dev_mode ? ' DEVELOPMENT' : ''),
+    title: 'Rebaslight' + (isDevMode ? ' DEVELOPMENT' : ''),
     webPreferences: {
       nodeIntegration: false,
       preload: path.resolve(__dirname, 'preload.js')
@@ -47,7 +47,7 @@ app.on('ready', function () {
   mainWindow.loadURL('file://' + path.resolve(__dirname, 'index.html'))
   mainWindow.maximize()
 
-  if (is_dev_mode) {
+  if (isDevMode) {
     mainWindow.webContents.openDevTools()
   }
 
@@ -61,7 +61,7 @@ app.on('ready', function () {
   })
 })
 
-if (is_dev_mode) {
+if (isDevMode) {
   const fs = require('fs')
   fs.watchFile(path.resolve(__dirname, './bundle.js'), function (curr, prev) {
     if (mainWindow) {

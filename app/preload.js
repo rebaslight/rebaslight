@@ -52,8 +52,8 @@ window.REBASLIGHT_BROWSER = {
       filters: [
         {name: 'Video', extensions: ['mp4']}
       ]
-    }, function (file_path) {
-      callback(null, file_path)
+    }, function (filePath) {
+      callback(null, filePath)
     })
   },
   projects: {
@@ -64,11 +64,11 @@ window.REBASLIGHT_BROWSER = {
       rpcRead(null, callback)
     }
   },
-  inputFileURLExists: function (file_url, callback) {
-    fs.access(new URL(file_url), fs.constants.R_OK, callback)
+  inputFileURLExists: function (fileUrl, callback) {
+    fs.access(new URL(fileUrl), fs.constants.R_OK, callback)
   },
-  doesFileExist: function (file_path, callback) {
-    fs.open(file_path, 'wx', function (err, fd) {
+  doesFileExist: function (filePath, callback) {
+    fs.open(filePath, 'wx', function (err, fd) {
       if (err) {
         if (err.code === 'EEXIST') {
           callback(null, true)
@@ -94,8 +94,8 @@ window.REBASLIGHT_BROWSER = {
       start: function (arg) {
         ipcRenderer.send('ffmpeg-start', arg)
       },
-      render: function (base64_str) {
-        ipcRenderer.send('ffmpeg-render-frame', base64_str)
+      render: function (base64Str) {
+        ipcRenderer.send('ffmpeg-render-frame', base64Str)
       },
       stop: function () {
         ipcRenderer.send('ffmpeg-stop')
