@@ -4,7 +4,9 @@ var Effects = require('./effects')
 var getPoints = require('./getPoints')
 var mainSource = require('./main-source')
 
-module.exports = function (ctx, main_source, layers, frame_n, unlocked) {
+module.exports = function (ctx, main_source, layers, frame_n, unlocked, frameOffset) {
+  var effectFrameN = Math.max(0, frame_n + (frameOffset || 0))
+
   ctx.clearRect(0, 0, main_source.frame_w, main_source.frame_h)
 
   ctx.globalCompositeOperation = 'screen'
@@ -13,7 +15,7 @@ module.exports = function (ctx, main_source, layers, frame_n, unlocked) {
   mainSource.render(ctx, main_source)
 
   _.forEach(layers, function (layer) {
-    var points = getPoints(layer, frame_n)
+    var points = getPoints(layer, effectFrameN)
     if (_.has(Effects, layer.effect_id)) {
       var effect = Effects[layer.effect_id]
       var settings = effect.normalizeSettings(layer.settings)
@@ -29,7 +31,7 @@ module.exports = function (ctx, main_source, layers, frame_n, unlocked) {
         }
       }
 
-      effect.render(ctx, settings, points, frame_n)
+      effect.render(ctx, settings, points, effectFrameN)
     }
   })
 

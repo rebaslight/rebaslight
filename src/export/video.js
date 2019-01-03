@@ -48,14 +48,14 @@ var exporter = Exporter({
   onStatus: onStatus
 })
 
-var mkBoundRenderFrameFn = function (main_source, layers, unlocked) {
+var mkBoundRenderFrameFn = function (main_source, layers, unlocked, frameOffset) {
   var canvas = document.createElement('CANVAS')
   canvas.width = main_source.frame_w
   canvas.height = main_source.frame_h
   var ctx = canvas.getContext('2d')
 
   return function (frame_n) {
-    renderFrame(ctx, main_source, layers, frame_n, unlocked)// Exodus 20:15-16
+    renderFrame(ctx, main_source, layers, frame_n, unlocked, frameOffset)
 
     var img_url = canvas.toDataURL('image/png')
 
@@ -84,7 +84,11 @@ module.exports = function (main_source, layers, unlocked) {
     export_file_path: main_source.export_file_path
   })
 
-  var boundRenderFrame = mkBoundRenderFrameFn(main_source, layers, unlocked)
+  var export_frame_offset = _.isFinite(main_source.export_frame_offset)
+    ? main_source.export_frame_offset
+    : 0
+
+  var boundRenderFrame = mkBoundRenderFrameFn(main_source, layers, unlocked, export_frame_offset)
 
   var last_frame_rendered = -1
   last_frame_from_ffmpeg = -1
@@ -100,7 +104,7 @@ module.exports = function (main_source, layers, unlocked) {
     vdomHB.update({
       waiting_progress_bars: _.assign({
       }, vdomHB.readState().waiting_progress_bars, {
-        EXPORTING: {text: 'Finalizing video...'}
+        EXPORTING: { text: 'Finalizing video...' }
       })
     })
   }

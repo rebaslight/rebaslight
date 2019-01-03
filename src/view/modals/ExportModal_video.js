@@ -13,6 +13,12 @@ var onPresetChange = function (preset) {
   })
 }
 
+var onOffsetChange = function (offset) {
+  bus.emit('set-main-source-info', {
+    export_frame_offset: parseFloat(offset)
+  })
+}
+
 module.exports = function (main_source) {
   var export_file_path = main_source.export_file_path
   if (!_.isString(export_file_path) || export_file_path.length === 0) {
@@ -51,6 +57,23 @@ module.exports = function (main_source) {
       onSelect: onPresetChange
     })),
     Fact('Quality', 'Maximum'),
-    Fact('Size', main_source.frame_w + ' x ' + main_source.frame_h)
+    Fact('Size', main_source.frame_w + ' x ' + main_source.frame_h),
+    Fact('Offset', Select({
+      options: [
+        [-4, '-4 frames'],
+        [-3, '-3 frames'],
+        [-2, '-2 frames'],
+        [-1, '-1 frame'],
+        [0, 'none (default)'],
+        [1, '+1 frame'],
+        [2, '+2 frames'],
+        [3, '+3 frames'],
+        [4, '+4 frames']
+      ],
+      value: _.isFinite(main_source.export_frame_offset)
+        ? main_source.export_frame_offset
+        : 0,
+      onSelect: onOffsetChange
+    }))
   ])
 }
