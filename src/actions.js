@@ -72,20 +72,20 @@ bus.on('seek-to', function (frame) {
 })
 
 bus.on('show-about-modal', function () {
-  vdomHB.update({show_AboutModal: true})
+  vdomHB.update({ show_AboutModal: true })
 })
 bus.on('hide-about-modal', function () {
-  vdomHB.update({show_AboutModal: false})
+  vdomHB.update({ show_AboutModal: false })
 })
 
 bus.on('UnlockModal-show', function () {
-  vdomHB.update({UnlockModal: true})
+  vdomHB.update({ UnlockModal: true })
 })
 bus.on('UnlockModal-unsign', function () {
   backend.removeUnlocked()
 })
 bus.on('UnlockModal-hide', function () {
-  vdomHB.update({UnlockModal: undefined})
+  vdomHB.update({ UnlockModal: undefined })
 })
 bus.on('sign-to-unlock', function (signature) {
   backend.signToUnlock(signature)
@@ -115,7 +115,7 @@ bus.on('set-preview_mode', function (is_on) {
     if (!_.isEmpty(messages)) {
       bus.emit('push-generic_modal_q', {
         title: 'Heads up!',
-        body: h('div', {style: {whiteSpace: 'pre-line'}}, [
+        body: h('div', { style: { whiteSpace: 'pre-line' } }, [
           messages.join('\n\n')
         ]),
         onClose: bus.signal('pop-generic_modal_q'),
@@ -128,7 +128,7 @@ bus.on('set-preview_mode', function (is_on) {
       })
     }
   }
-  vdomHB.update({preview_mode: !!is_on})
+  vdomHB.update({ preview_mode: !!is_on })
 })
 
 bus.on('set-unlocked', function (unlocked) {
@@ -143,9 +143,9 @@ bus.on('set-unlocked', function (unlocked) {
 bus.on('set-currently_open_menu', function (id) {
   var state = vdomHB.readState()
   if (id === state.currently_open_menu) {
-    vdomHB.update({currently_open_menu: undefined})
+    vdomHB.update({ currently_open_menu: undefined })
   } else {
-    vdomHB.update({currently_open_menu: id})
+    vdomHB.update({ currently_open_menu: id })
   }
 })
 
@@ -163,7 +163,7 @@ bus.on('new-project', function () {
 bus.on('open-project', function (id) {
   vdomHB.update({
     waiting_progress_bars: _.assign({
-      OPENING_CURRENT_PROJECT: {text: 'loading project...'}
+      OPENING_CURRENT_PROJECT: { text: 'loading project...' }
     }, vdomHB.readState().waiting_progress_bars)
   })
   backend.openProject(id)
@@ -174,7 +174,7 @@ bus.on('projects', function (projects) {
   })
 })
 bus.on('global_settings', function (global_settings) {
-  vdomHB.update({global_settings: global_settings})
+  vdomHB.update({ global_settings: global_settings })
 })
 bus.on('set-current_project', function (project) {
   vdomHB.update({
@@ -344,7 +344,7 @@ bus.on('start-the-export-process', function () {
     vdomHB.update({
       show_ExportModal: false,
       waiting_progress_bars: _.assign({
-        EXPORTING: {text: 'Exporting ' + main_source.type + '...'}
+        EXPORTING: { text: 'Exporting ' + main_source.type + '...' }
       }, vdomHB.readState().waiting_progress_bars)
     })
 
@@ -419,7 +419,7 @@ bus.on('clear-exported_image_download_url', function () {
 bus.on('main-source-start-loading', function (type) {
   vdomHB.update({
     waiting_progress_bars: _.assign({
-      MAIN_SOURCE_LOADING: {text: 'loading ' + type + '...'}
+      MAIN_SOURCE_LOADING: { text: 'loading ' + type + '...' }
     }, vdomHB.readState().waiting_progress_bars)
   })
 })
@@ -445,7 +445,7 @@ bus.on('export-finished-successfully', function () {
   })
 })
 bus.on('close-export_finished_modal', function () {
-  vdomHB.update({export_finished_modal: undefined})
+  vdomHB.update({ export_finished_modal: undefined })
 })
 
 bus.on('open-video_player_modal', function (file_path) {
@@ -458,7 +458,20 @@ bus.on('open-video_player_modal', function (file_path) {
 })
 
 bus.on('close-video_player_modal', function () {
-  vdomHB.update({video_player_modal: undefined})
+  vdomHB.update({ video_player_modal: undefined })
+})
+
+bus.on('show-SaveModal', function () {
+  bus.emit('push-generic_modal_q', {
+    title: 'Save',
+    body: `Rebaslight saves automatically. Next time you open Rebaslight it will pick up where you left off. Use "Export" to save the video file with your effects applied.`,
+    buttons: [
+      {
+        text: 'Close',
+        onClick: bus.signal('pop-generic_modal_q')
+      }
+    ]
+  })
 })
 
 bus.on('new-version-available', function (new_version) {
@@ -493,10 +506,10 @@ bus.on('push-generic_modal_q', function (data) {
   })
 })
 bus.on('pop-generic_modal_q', function () {
-  vdomHB.update({generic_modal_q: _.tail(vdomHB.readState().generic_modal_q)})
+  vdomHB.update({ generic_modal_q: _.tail(vdomHB.readState().generic_modal_q) })
 })
 bus.on('pop-error_message_q', function () {
-  vdomHB.update({error_message_q: _.tail(vdomHB.readState().error_message_q)})
+  vdomHB.update({ error_message_q: _.tail(vdomHB.readState().error_message_q) })
 })
 bus.on('show-bad-browser-message', function () {
   bus.emit('display-error', 'Looks like your web browser is out of date. Try using Google Chrome.')
@@ -553,7 +566,7 @@ bus.on('start-Convert', function (conf) {
         frame = _.parseInt(parts[1], 10) || -1
       }
       if (frame < 0) {
-        setConvertProgress({text: 'Converting...'})
+        setConvertProgress({ text: 'Converting...' })
         return
       }
       var percent
@@ -592,7 +605,7 @@ bus.on('start-Convert', function (conf) {
       })
     }
   })
-  setConvertProgress({text: 'Converting...'})
+  setConvertProgress({ text: 'Converting...' })
   vdomHB.update({
     ConvertModal: undefined
   })

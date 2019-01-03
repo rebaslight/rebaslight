@@ -39,6 +39,7 @@ app.on('ready', function () {
   mainWindow = new BrowserWindow({
     title: 'Rebaslight' + (isDevMode ? ' DEVELOPMENT' : ''),
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: false,
       preload: path.resolve(__dirname, 'preload.js')
     }

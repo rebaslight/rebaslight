@@ -50,14 +50,14 @@ var css_vars = jsCSS({
 
 var MenuItemItem = function (props) {
   if (_.has(props.onClick, 'href')) {
-    return h('a.' + css_vars.MenuItemItem, {href: props.onClick.href}, props.label)
+    return h('a.' + css_vars.MenuItemItem, { href: props.onClick.href }, props.label)
   }
   var onClick = _.isFunction(props.onClick) ? props.onClick : _.noop
   // not using <a> b/c it brings up a url preview in the bottom of the page
-  return h('span.' + css_vars.MenuItemItem, {'ev-click': prevDflt(function () {
+  return h('span.' + css_vars.MenuItemItem, { 'ev-click': prevDflt(function () {
     bus.emit('set-currently_open_menu', undefined)
     onClick()
-  })}, props.label)
+  }) }, props.label)
 }
 
 var MenuItem = function (props) {
@@ -118,7 +118,7 @@ var MenuItem = function (props) {
           }
         })
       }
-      return MenuItemItem({label: item[0], onClick: item[1]})
+      return MenuItemItem({ label: item[0], onClick: item[1] })
     })
     ) : null
   ])
@@ -133,6 +133,7 @@ module.exports = function (state) {
   })
   if (_.size(projects_menu_items) > 0) {
     projects_menu_items.push('SEPARATOR')
+    projects_menu_items.push(['Save', bus.signal('show-SaveModal')])
     projects_menu_items.push(['Export', bus.signal('show-ExportModal')])
     projects_menu_items.push('SEPARATOR')
   }
@@ -156,12 +157,12 @@ module.exports = function (state) {
       label: 'Help',
       items: [
         ['About', bus.signal('show-about-modal')],
-        ['Contact us', {href: toRlURL('/#contact')}],
+        ['Contact us', { href: toRlURL('/#contact') }],
         [
           'License',
           bus.signal('UnlockModal-show')
         ],
-        ['How To', {href: toRlURL('/#how-to')}]
+        ['How To', { href: toRlURL('/#how-to') }]
       ]
     }
   }
@@ -180,7 +181,7 @@ module.exports = function (state) {
         is_open: id === currently_open_menu
       }, m))
     }),
-    h('a.' + css_vars.MenuLabel, {href: toRlURL('/')},
+    h('a.' + css_vars.MenuLabel, { href: toRlURL('/') },
       'Rebaslight ' +
       cur_v +
       (/^0/.test(cur_v) ? ' Beta' : '')
