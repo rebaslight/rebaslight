@@ -11,6 +11,9 @@ var Export = require('./export')
 var Effects = require('./effects')
 var toRlURL = require('./toRlURL')
 var RLBrowser = require('./RLBrowser')
+var changePoint = require('./view/FrameEditor').changePoint
+var getPointsForMouseState = require('./view/FrameEditor').getPointsForMouseState
+var isFrameLayerWithLastSelectedPoint = require('./view/FrameEditor').isFrameLayerWithLastSelectedPoint
 var toInt = function (n) {
   return parseInt(n, 10) || 0
 }
@@ -66,6 +69,39 @@ bus.on('seeked', function (frame_n, currentTime) {
 
 bus.on('seek-inc-by', function (inc) {
   mainSource.incFrameNBy(inc)
+})
+bus.on('set-showMagnifier', function (bool) {
+  vdomHB.update({ showMagnifier: bool })
+})
+bus.on('set-mouse_state', function (mouse_state) {
+  vdomHB.update({ mouse_state })
+})
+bus.on('shift-current-point', function (direction) {
+  var state = vdomHB.readState()
+  var mouse_state = state.mouse_state
+  if (isFrameLayerWithLastSelectedPoint(state, mouse_state)) {
+    let x = mouse_state.x
+    let y = mouse_state.y
+    switch (direction) {
+      case 'up' :
+        y--
+        break
+      case 'right':
+        x++
+        break
+      case 'down' :
+        y++
+        break
+      case 'left' :
+        x--
+        break
+    }
+    var points = changePoint(getPointsForMouseState(mouse_state), mouse_state.payload.i, x, y)
+    mouse_state.x = x
+    mouse_state.y = y
+    var sss = mouse_state.state_snap_shot
+    backend.savePoints(sss.project_id, sss.layer_id, sss.frame_n, points)
+  }
 })
 bus.on('seek-to', function (frame) {
   mainSource.setFrameN(frame)

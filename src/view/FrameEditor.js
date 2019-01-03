@@ -30,6 +30,9 @@ var css_vars = jsCSS({
     ':hover': {
       'cursor': 'pointer',
       'stroke': '#0FF'
+    },
+    '&.$Active': {
+      'stroke': '#0DD'
     }
   },
   '.$Polygon': {
@@ -44,6 +47,18 @@ var css_vars = jsCSS({
   }
 })
 
+function isFrameLayerWithLastSelectedPoint (state, mouse_state) {
+  if (mouse_state && !state.preview_mode) {
+    var sss = mouse_state.state_snap_shot
+    if (sss && sss.layer_id === state.open_layer_id && sss.frame_n === state.frame) {
+      if (mouse_state.payload && mouse_state.payload.type === 'point' && mouse_state.payload.i >= 0) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 var getMaxNPointsForEffectID = function (effect_id) {
   if (_.has(Effects, effect_id)) {
     var effect = Effects[effect_id]
@@ -55,7 +70,7 @@ var getMaxNPointsForEffectID = function (effect_id) {
 }
 
 var SVGTracer = function () {
-  var render = function (canvas_rect, points, outline_points) {
+  var render = function (canvas_rect, points, outline_points, highLightI) {
     return svg('svg', {
       id: 'RLDATAID-svg',
       width: canvas_rect.w,
@@ -74,9 +89,13 @@ var SVGTracer = function () {
         }).join(' ')
       }),
       _.map(points, function (p, i) {
+        var classes = css_vars.PointBox
+        if (highLightI === i) {
+          classes += ' ' + css_vars.Active
+        }
         return svg('rect', {
           id: 'RLDATAID-point-' + i,
-          'class': css_vars.PointBox,
+          'class': classes,
           x: flatInt(p.x - PointBox_size / 2),
           y: flatInt(p.y - PointBox_size / 2)
         })
@@ -185,7 +204,7 @@ var Widget = mkWidget(function (initial_hb_state) {
   }
 
   var mouse_state = {}
-  var canvas_rect = {x: 0, y: 0, w: 0, h: 0, marginLeft: 0, marginTop: 0, zoom: 0}
+  var canvas_rect = { x: 0, y: 0, w: 0, h: 0, marginLeft: 0, marginTop: 0, zoom: 0 }
 
   var pointsSVGPoints = function (points) {
     return _.map(_.chunk(points, 2), function (p) {
@@ -219,7 +238,11 @@ var Widget = mkWidget(function (initial_hb_state) {
         points = getCurrentPoints()
       }
       var outline_points = getOutlinePoints(points)
-      return t(canvas_rect, pointsSVGPoints(points), pointsSVGPoints(outline_points))
+      var highLightI = -1
+      if (isFrameLayerWithLastSelectedPoint(state, mouse_state)) {
+        highLightI = mouse_state.payload.i
+      }
+      return t(canvas_rect, pointsSVGPoints(points), pointsSVGPoints(outline_points), highLightI)
     }
   }())
 
@@ -251,7 +274,9 @@ var Widget = mkWidget(function (initial_hb_state) {
       : []
     renderFrame(ctx, state.current_project.main_source, layers, state.frame, state.unlocked)
 
-    magnifier.render(mouse_state)
+    let showMagnifier = state.showMagnifier && isFrameLayerWithLastSelectedPoint(state, mouse_state)
+
+    magnifier.render(mouse_state, showMagnifier)
 
     renderSVG()// always call this, in effects mode it just does nothing
   }
@@ -320,11 +345,11 @@ var Widget = mkWidget(function (initial_hb_state) {
     var payload
     var target_id = (ev.target && ev.target.getAttribute ? ev.target.getAttribute('id') : '') || ''
     if (/^RLDATAID-point-[0-9]+$/.test(target_id)) {
-      payload = {type: 'point', i: parseInt(target_id.replace(/^RLDATAID-point-/, ''), 10) || 0}
+      payload = { type: 'point', i: parseInt(target_id.replace(/^RLDATAID-point-/, ''), 10) || 0 }
     } else if (/^RLDATAID-shape.*$/.test(target_id)) {
-      payload = {type: 'translate', i: 'body'}
+      payload = { type: 'translate', i: 'body' }
     } else if (/^RLDATAID-(svg|canvas)$/.test(target_id)) {
-      payload = {type: 'point', i: -1}
+      payload = { type: 'point', i: -1 }
     } else {
       return
     }
@@ -353,19 +378,23 @@ var Widget = mkWidget(function (initial_hb_state) {
       if (payload.type === 'point') {
         saveMousePoints(withoutPointI(getPointsForMouseState(mouse_state), mouse_state.payload.i))
         mouse_state.is_down = false
+        bus.emit('set-mouse_state', mouse_state)
         return
       } else if (payload.type === 'translate') {
         saveMousePoints([])// delete them all
         mouse_state.is_down = false
+        bus.emit('set-mouse_state', mouse_state)
         return
       }
     }
+    bus.emit('set-mouse_state', mouse_state)
     renderImage()
   }, function (ev) {
     if (!mouse_state.is_down) {
       return
     }
     setMouseXY(ev)
+    bus.emit('set-mouse_state', mouse_state)
     renderImage()
   }, function (ev) {
     if (!mouse_state.is_down) {
@@ -373,6 +402,7 @@ var Widget = mkWidget(function (initial_hb_state) {
     }
     mouse_state.is_down = false
     setMouseXY(ev)
+    bus.emit('set-mouse_state', mouse_state)
 
     saveMousePoints(getPointsForMouseState(mouse_state))
   })
@@ -432,3 +462,6 @@ module.exports = function (state) {
   }
   return Widget(state)
 }
+module.exports.changePoint = changePoint
+module.exports.getPointsForMouseState = getPointsForMouseState
+module.exports.isFrameLayerWithLastSelectedPoint = isFrameLayerWithLastSelectedPoint

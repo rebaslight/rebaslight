@@ -77,7 +77,7 @@ vdomHB.update({// initial_state
 
   error_message_q: [],
   waiting_progress_bars: {
-    INITIAL_LOAD: {text: 'loading...'}
+    INITIAL_LOAD: { text: 'loading...' }
   }
 })
 document.body.appendChild(vdomHB.init(render))
@@ -92,11 +92,49 @@ document.body.addEventListener('contextmenu', function (e) {
   e.preventDefault()
 }, true)
 vdomHB.delegator.listenTo('keydown')
+vdomHB.delegator.listenTo('keyup')
+vdomHB.delegator.listenTo('mousedown')
 vdomHB.delegator.addGlobalEventListener('keydown', function (ev) {
-  var code = ev.keyCode
-  if (code === 37) {
-    bus.emit('seek-inc-by', -1)
-  } else if (code === 39) {
-    bus.emit('seek-inc-by', +1)
+  switch (ev.keyCode) {
+    case 17:
+      bus.emit('set-showMagnifier', true)
+      break
+    case 38:
+      if (ev.ctrlKey) {
+        bus.emit('shift-current-point', 'up')
+      }
+      break
+    case 39:
+      if (ev.ctrlKey) {
+        bus.emit('shift-current-point', 'right')
+      } else {
+        bus.emit('seek-inc-by', +1)
+      }
+      break
+    case 40:
+      if (ev.ctrlKey) {
+        bus.emit('shift-current-point', 'down')
+      }
+      break
+    case 37:
+      if (ev.ctrlKey) {
+        bus.emit('shift-current-point', 'left')
+      } else {
+        bus.emit('seek-inc-by', -1)
+      }
+      break
+  }
+})
+vdomHB.delegator.addGlobalEventListener('keyup', function (ev) {
+  switch (ev.keyCode) {
+    case 17:
+      bus.emit('set-showMagnifier', false)
+      break
+  }
+})
+vdomHB.delegator.addGlobalEventListener('mousedown', function (ev) {
+  var state = vdomHB.readState()
+  if (state.showMagnifier) {
+    bus.emit('set-showMagnifier', false)
   }
 })

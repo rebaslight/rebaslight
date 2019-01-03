@@ -33,8 +33,9 @@ module.exports = function (orig_canvas) {
 
   return {
     canvas: canvas,
-    render: function (mouse_state) {
-      if (!mouse_state || !mouse_state.is_down) {
+    render: function (mouse_state, showMagnifier) {
+      if ((mouse_state && mouse_state.is_down) || showMagnifier) {
+      } else {
         if (is_visible) {
           canvas.style.display = 'none'
           is_visible = false
