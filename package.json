@@ -89,7 +89,7 @@
     "virtual-dom-absolute-layout": "^1.0.0",
     "virtual-dom-closure-widget": "^1.0.0",
     "webpack": "^4.28.3",
-    "webpack-cli": "^3.1.2",
+    "webpack-cli": "^3.2.0",
     "wrap-prevent-default": "^1.0.0",
     "xhr": "^2.2.0",
     "xtend": "^4.0.1"
