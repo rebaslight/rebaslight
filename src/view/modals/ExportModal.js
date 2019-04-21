@@ -63,7 +63,7 @@ module.exports = function (state) {
     title: 'Export',
     onClose: bus.signal('close-ExportModal'),
     buttons: [
-      Button({'ev-click': bus.signal('start-the-export-process')}, 'Export!')
+      Button({ 'ev-click': bus.signal('start-the-export-process') }, 'Export!')
     ]
   }, h('div', [
     body,
@@ -72,12 +72,12 @@ module.exports = function (state) {
       : h('div.' + css_vars.alert, {
         'ev-click': bus.signal('UnlockModal-show')
       }, [
-        'To remove the TRIAL VERSION watermarks purchase the "',
+        'To remove the "Made with Rebaslight" watermark please ',
         h('a.' + css_vars.link, {
           href: '#',
           'ev-click': bus.signal('UnlockModal-show')
-        }, 'Rebaslight user license'),
-        '"'
+        }, 'pay here'),
+        '.'
       ])
   ]))
 }

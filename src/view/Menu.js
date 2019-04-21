@@ -200,7 +200,7 @@ module.exports = function (state) {
           background: '#770000'
         }
       },
-      'TRIAL VERSION'
+      'FREE VERSION'
       )
   ])
 }

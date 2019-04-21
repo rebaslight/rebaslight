@@ -6,16 +6,19 @@ Rebaslight - an easy to use special effects editor
 
 [Download/Install](http://www.rebaslight.com/#download)
 
-## License
+## Rebaslight Terms, Conditions, and License Agreement
 
-Copyright (c) 2018 Very Small Helm LLC. All Rights Reserved.
+Rebaslight is a product of Very Small Helm LLC, Copyright (c) 2008-2019.
 
-Rebaslight is dual-licensed.
+Rebaslight's codebase is open source and adopts the [GNU AGPLv3](https://github.com/rebaslight/rebaslight/blob/master/AGPL-3.0) license.
 
-You may use Rebaslight at no cost under the under the terms and conditions of the "[Trial License Agreement](https://github.com/rebaslight/rebaslight/blob/master/TRIAL-LICENSE.md)"
+Open source does not always mean free as in gratis.
+Rebaslight is free (no cost) to use as long as the "Made with Rebaslight" watermark appears on the output video/image.
+However, if you make a one-time payment of \$25 USD you may remove this watermark.
+Once paid, you personally may use Rebaslight without watermarks forever.
 
-If you purchased the "Rebaslight user license" or purchased a Rebaslight effect previously, then you may use Rebaslight under the terms and conditions of the [GNU AGPLv3](https://github.com/rebaslight/rebaslight/blob/master/AGPL-3.0)
+Pay here: [rebaslight.com/buy](https://www.rebaslight.com/buy.html)
 
-Neither license grants you permission to use the Rebaslight name, logo, or brand.
+Thank you for your integrity!
 
-Purchase at [buy.rebaslight.com](https://buy.rebaslight.com/)
+- Matthew

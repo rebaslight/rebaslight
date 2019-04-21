@@ -36,10 +36,23 @@ module.exports = function (ctx, main_source, layers, frame_n, unlocked, frameOff
   })
 
   if (!unlocked) {
-    // Exodus 20:15-16
+    // Dear coder,
+    //
+    // Congratulations! You found the super advanced, top-secret, ultra-secure DRM!
+    // Open source does not always mean free as in gratis.
+    // Rebaslight is free (no cost) to use as long as the "Made with Rebaslight" watermark appears on the output video/image.
+    // However, if you make a one-time payment of $25 you may remove this watermark for yourself only.
+    //
+    // Don't be a jerk and redistribute a clone of Rebaslight under a different name.
+    // Instead, join me, and together we can improve Rebaslight!
+    //
+    // Thank you for your integrity!
+    //
+    // - Matthew
+    //
     var font_size = Math.max(10, flatInt(main_source.frame_w * 0.05))
-    var txt = 'Rebaslight Trial Version'
-
+    var txt = 'Made with Rebaslight'
+    // "Thou shalt not steal. Thou shalt not bear false witness against thy neighbour." - Exodus 20:15-16
     ctx.font = font_size + 'px sans-serif'
     var txt_w = flatInt(ctx.measureText(txt).width)
     ctx.fillStyle = 'rgba(255, 255, 255, .7)'

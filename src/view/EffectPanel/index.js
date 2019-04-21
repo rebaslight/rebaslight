@@ -80,12 +80,12 @@ module.exports = function (state) {
       : h('div.' + css.alert, {
         'ev-click': bus.signal('UnlockModal-show')
       }, [
-        'To remove the TRIAL VERSION watermarks purchase the "',
+        'To remove the "Made with Rebaslight" watermark please ',
         h('a.' + css.link, {
           href: '#',
           'ev-click': bus.signal('UnlockModal-show')
-        }, 'Rebaslight user license'),
-        '"'
+        }, 'pay here'),
+        '.'
       ])
   ])
 }

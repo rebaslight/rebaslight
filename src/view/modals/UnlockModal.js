@@ -46,15 +46,15 @@ module.exports = function (state) {
   var onClose = bus.signal('UnlockModal-hide')
   if (state.unlocked) {
     return Modal({
-      title: 'Unlocked!',
+      title: 'Paid!',
       onClose: onClose,
       buttons: []
     }, h('div', [
       h('p', [
-        'Thank you for purchasing a user license!'
+        'Thank you for purchasing Rebaslight!'
       ]),
       h('p', [
-        h('a.' + css_vars.link, {href: license_url}, 'License Agreement')
+        h('a.' + css_vars.link, { href: license_url }, 'License Agreement')
       ]),
       h('a.' + css_vars.link, {
         href: '#',
@@ -74,7 +74,7 @@ module.exports = function (state) {
         }
       }, state.unlocked),
       h('div', [
-        Button({onClick: prevDflt(onClose)}, 'Ok'),
+        Button({ onClick: prevDflt(onClose) }, 'Ok'),
         h('a.' + css_vars.link, {
           href: '#',
           'ev-click': bus.signal('UnlockModal-unsign'),
@@ -82,14 +82,17 @@ module.exports = function (state) {
             marginLeft: '1em'
           }
         }, 'un-sign')
+      ]),
+      h('div', { style: { marginTop: '1em' } }, [
+        'Thank you for your honesty!'
       ])
     ]))
   }
   return Modal({
-    title: 'Trial Version',
+    title: 'Free Version',
     onClose: onClose,
     buttons: []
-  }, h('form', {'ev-submit': function (e) {
+  }, h('form', { 'ev-submit': function (e) {
     e.preventDefault()
     var data = formNodeToData(e.target)
     if (!_.isString(data.signature) || (data.signature.trim().length === 0)) {
@@ -98,38 +101,34 @@ module.exports = function (state) {
     var str = data.signature
     str += ' on ' + (new Date()).toISOString()
     bus.emit('sign-to-unlock', str)
-  }}, [
-    h('p', [
-      'Thank you for trying Rebaslight.'
-    ]),
-    h('p', {style: {lineHeight: '1.4'}}, [
-      'To remove the watermarks and get full-access forever, please purchase the ',
-      h('b', {style: {fontFamily: 'monospace'}}, ['$25']),
-      ' "Rebaslight user license" (one per user).',
-      ' Full-access forever means you automatically get new versions and/or effects at no additional cost.',
+  } }, [
+    h('p', { style: { lineHeight: '1.4' } }, [
+      'To remove the "Made with Rebaslight" watermarks forever, please purchase Rebaslight for ',
+      h('b', { style: { fontFamily: 'monospace' } }, ['$25']),
+      ' USD (per user). Once paid you may use may use Rebaslight without watermarks forever.',
       ' For more info see the ',
-      h('a.' + css_vars.link, {href: license_url}, 'License Agreement'),
+      h('a.' + css_vars.link, { href: license_url }, 'License'),
       '.'
     ]),
     h('p', {
-      style: {margin: '1.5rem 0'}
+      style: { margin: '1.5rem 0' }
     }, [
       h('a.' + css_vars.link, {
-        href: 'https://buy.rebaslight.com/',
+        href: 'https://www.rebaslight.com/buy.html',
         _target: 'blank'
       }, [
         h('img', {
           src: buy_now_img,
-          alt: 'buy.rebaslight.com',
-          style: {marginLeft: '1rem'}
+          alt: 'www.rebaslight.com/buy',
+          style: { marginLeft: '1rem' }
         })
       ])
     ]),
     h('p', [
-      'If you purchased the license, then sign here:'
+      'If you paid, then sign here:'
     ]),
     h('div', [
-      h('table', {style: {width: '100%'}}, [
+      h('table', { style: { width: '100%' } }, [
         h('tbody', [
           h('tr', [
             h('td', [
@@ -138,7 +137,7 @@ module.exports = function (state) {
                 'type': 'text'
               })
             ]),
-            h('td', {style: {textAlign: 'center'}}, [
+            h('td', { style: { textAlign: 'center' } }, [
               ((new Date()).getMonth() + 1),
               '/',
               (new Date()).getDate(),
@@ -147,17 +146,17 @@ module.exports = function (state) {
             ])
           ]),
           h('tr', [
-            h('td', {style: {textAlign: 'center'}}, [
+            h('td', { style: { textAlign: 'center' } }, [
               'Name'
             ]),
-            h('td', {style: {textAlign: 'center'}}, [
+            h('td', { style: { textAlign: 'center' } }, [
               'Date'
             ])
           ])
         ])
       ])
     ]),
-    h('div', {style: {margin: '10px 0'}}, [
+    h('div', { style: { margin: '10px 0' } }, [
       Button({}, 'Sign'),
       h('a.' + css_vars.link, {
         href: '#',
@@ -165,7 +164,10 @@ module.exports = function (state) {
         style: {
           marginLeft: '1em'
         }
-      }, 'Nevermind, stay in trial mode')
+      }, 'Nevermind, stay in free mode')
+    ]),
+    h('div', { style: { marginTop: '1em' } }, [
+      'Thank you for your honesty!'
     ])
   ]))
 }

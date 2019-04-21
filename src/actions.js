@@ -314,10 +314,6 @@ bus.on('add-layer', function (effect_id) {
   })
 })
 
-bus.on('open-buy-effect-url', function (effect_id) {
-  window.location.assign(toRlURL('/effects'))
-})
-
 bus.on('delete-project', function () {
   var state = vdomHB.readState()
   if (!_.has(state, ['current_project', 'id'])) {
