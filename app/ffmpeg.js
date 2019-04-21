@@ -53,9 +53,13 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
   f.stderr.on('data', function (data) {
     event.sender.send('ffmpeg-status', data + '')
   })
-  f.on('error', function (err) {
+  function onError (err) {
     event.sender.send('ffmpeg-error', String(err))
-  })
+  }
+  f.stdin.on('error', onError)
+  f.stdout.on('error', onError)
+  f.stderr.on('error', onError)
+  f.on('error', onError)
   f.on('close', function (code) {
     event.sender.send('ffmpeg-stopped', code)
   })
@@ -102,9 +106,13 @@ ipcMain.on('ffmpeg-convert', function (event, opts) {
   proc.stderr.on('data', function (data) {
     event.sender.send('ffmpeg-convert-status', data + '')
   })
-  proc.on('error', function (err) {
+  function onError (err) {
     event.sender.send('ffmpeg-convert-error', String(err))
-  })
+  }
+  proc.stdin.on('error', onError)
+  proc.stdout.on('error', onError)
+  proc.stderr.on('error', onError)
+  proc.on('error', onError)
   proc.on('close', function (code) {
     event.sender.send('ffmpeg-convert-stopped', code)
   })
