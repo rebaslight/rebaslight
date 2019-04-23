@@ -9,7 +9,6 @@ var getPoints = require('./getPoints')
 var mainSource = require('./main-source')
 var Export = require('./export')
 var Effects = require('./effects')
-var toRlURL = require('./toRlURL')
 var RLBrowser = require('./RLBrowser')
 var changePoint = require('./view/FrameEditor').changePoint
 var getPointsForMouseState = require('./view/FrameEditor').getPointsForMouseState
@@ -206,6 +205,7 @@ bus.on('select-layer', function (id) {
 })
 bus.on('new-project', function () {
   backend.openProject(null)// clear current_project_id
+  mainSource.clear()
   vdomHB.update({
     show_OpenMainSource: true
   })
@@ -331,6 +331,10 @@ bus.on('main-source-use-detected_fps', function () {
       RLBrowser.getFrameTable(file_path)
         .then(table => {
           backend.changeFrameRate(pjId, oldFps, newFps, table)
+          const state = vdomHB.readState()
+          if (state && state.current_project && state.current_project.main_source) {
+            mainSource.reloadFrameRate(state.current_project.main_source)
+          }
         })
         .catch(err => {
           bus.emit('display-error', 'Error reading frame table.', err, err + '')

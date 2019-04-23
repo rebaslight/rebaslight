@@ -82,7 +82,7 @@ var mount = function (main_source, callback) {
           detected_fps = videoELM.captureStream().getVideoTracks()[0].getSettings().frameRate
         } catch (err) {
         }
-        if (typeof detected_fps !== 'number' || detected_fps !== detected_fps || detected_fps <= 0) {
+        if (typeof detected_fps !== 'number' || Number.isNaN(detected_fps) || detected_fps <= 0) {
           detected_fps = null
         }
 
@@ -112,6 +112,12 @@ var mount = function (main_source, callback) {
 }
 
 module.exports = {
+  clear: function () {
+    curr_url = null
+    curr_video = null
+    curr_image = null
+    curr_frameMath = FrameMath(25)
+  },
   open: function (main_source) {
     var url = main_source.url
     var type = main_source.type
@@ -172,6 +178,13 @@ module.exports = {
         setCurrentTime(0)// Hack for image not being initially rendered
       }, 100)
     })
+  },
+  reloadFrameRate: function(main_source){
+    if (main_source.use_fps) {
+      curr_frameMath = FrameMath(main_source.use_fps)
+    } else {
+      curr_frameMath = FrameMath(25)
+    }
   },
   incFrameNBy: function (inc) {
     if (curr_video) {

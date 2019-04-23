@@ -157,7 +157,8 @@ ipcMain.on('ffmpeg-frame-table', function (event, opts) {
   proc.stderr
     .pipe(split2())
     .on('data', function (line) {
-      const m = /^\[Parsed_showinfo.*\] n:\s*([0-9]+).* pts_time:\s*([0-9.]+) /.exec(line)
+      line = line.trim()
+      const m = /\[Parsed_showinfo.*\] n:\s*([0-9]+).* pts_time:\s*([0-9.]+) /.exec(line)
       if (m) {
         const n = parseInt(m[1], 10)
         const time = parseFloat(m[2])
@@ -178,7 +179,7 @@ ipcMain.on('ffmpeg-frame-table', function (event, opts) {
   proc.on('error', onError)
   proc.on('close', function (code) {
     if (isMissingFrame) {
-      onError('Missing a frame')
+      onError('Missing a frame\nffmpeg ' + JSON.stringify(args))
     } else {
       event.sender.send('ffmpeg-frame-table-done', table)
     }
