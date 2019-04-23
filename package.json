@@ -98,5 +98,8 @@
     "rules": {
       "camelcase": 0
     }
+  },
+  "dependencies": {
+    "split2": "^3.1.1"
   }
 }

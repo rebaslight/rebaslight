@@ -117,5 +117,18 @@ window.REBASLIGHT_BROWSER = {
         ipcRenderer.send('ffmpeg-convert', opts)
       }
     }
+  },
+  getFrameTable: function (input_file) {
+    return new Promise(function (resolve, reject) {
+      ipcRenderer.on('ffmpeg-frame-table-error', function (event, error) {
+        reject(error)
+      })
+      ipcRenderer.on('ffmpeg-frame-table-done', function (event, table) {
+        resolve(table)
+      })
+      ipcRenderer.send('ffmpeg-frame-table', {
+        input_file
+      })
+    })
   }
 }

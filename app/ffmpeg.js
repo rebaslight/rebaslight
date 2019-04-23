@@ -3,6 +3,7 @@ const path = require('path')
 const spawn = require('child_process').spawn
 const ipcMain = require('electron').ipcMain
 const ffmpegPresets = require('./ffmpeg-presets')
+const split2 = require('split2')
 
 const ffmpegPath = path.join(__dirname, '../../ffmpeg')
 
@@ -27,19 +28,40 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
 
   // frames input
   args.push(['-f', 'image2pipe'])
-  args.push(['-framerate', '25'])
+  args.push(['-framerate', opts.use_fps || '25'])
   args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
   args.push(['-c:v', 'png'])
   args.push(['-i', '-'])
 
-  // audio input
-  args.push(['-vn'])// disable video
-  args.push(['-i', opts.audio_file_path])
+  if (opts.use_fps) {
+    // main source
+    args.push(['-i', opts.audio_file_path])
+    // compose
+    args.push([
+      '-filter_complex',
+      `[0:v]setsar=sar=1,format=rgba [effects];
+       [1:v]setsar=sar=1,format=rgba [main];
+       [main][effects]overlay[out]`
+      // Why overlay? Because it will preserve the orginal framerate settings i.e. 30000/1001 fps
+      //
+      // Below is how to do a screen overlay,
+      // However, the frames most likely will not line up; especially if it's variable fps.
+      // `[0:v]setsar=sar=1,format=rgba [effects];
+      //  [1:v]format=rgba [main];
+      //  [main][effects]blend=all_mode=screen[out]
+    ])
+    args.push(['-map', '[out]']) // use the composed video
+    args.push(['-map', '1:a?']) // use the audio from input 1 if exists
+  } else {
+    // main source
+    args.push(['-vn'])// disable video
+    args.push(['-i', opts.audio_file_path])
+    // compose
+    args.push(['-map', '0:v']) // use the composed video
+    args.push(['-map', '1:a?']) // use the audio from input 1 if exists
+    args.push(['-framerate', '25'])
+  }
 
-  // output settings
-  args.push(['-map', '0:v'])// use the video from input 0
-  args.push(['-map', '1:a?'])// use the audio from input 1 if exists
-  args.push(['-framerate', '25'])
   args.push(['-s', opts.frame_w + 'x' + opts.frame_h])
   args.push(ffmpegPresets[opts.preset].args)
 
@@ -115,5 +137,50 @@ ipcMain.on('ffmpeg-convert', function (event, opts) {
   proc.on('error', onError)
   proc.on('close', function (code) {
     event.sender.send('ffmpeg-convert-stopped', code)
+  })
+})
+
+ipcMain.on('ffmpeg-frame-table', function (event, opts) {
+  if (!/ffmpeg(\.exe)?$/i.test(ffmpegPath)) {
+    return
+  }
+  var args = []
+  args.push(['-i', opts.input_file])
+  args.push(['-vf', 'showinfo'])
+  args.push(['-f', 'null'])
+  args.push('-')
+
+  let isMissingFrame = false
+  const table = []
+
+  var proc = spawn(ffmpegPath, [].concat.apply([], args))
+  proc.stderr
+    .pipe(split2())
+    .on('data', function (line) {
+      const m = /^\[Parsed_showinfo.*\] n:\s*([0-9]+).* pts_time:\s*([0-9.]+) /.exec(line)
+      if (m) {
+        const n = parseInt(m[1], 10)
+        const time = parseFloat(m[2])
+        if (n !== table.length) {
+          isMissingFrame = true
+          proc.kill()
+        } else {
+          table.push(time)
+        }
+      }
+    })
+  function onError (err) {
+    event.sender.send('ffmpeg-frame-table-error', String(err))
+  }
+  proc.stdin.on('error', onError)
+  proc.stdout.on('error', onError)
+  proc.stderr.on('error', onError)
+  proc.on('error', onError)
+  proc.on('close', function (code) {
+    if (isMissingFrame) {
+      onError('Missing a frame')
+    } else {
+      event.sender.send('ffmpeg-frame-table-done', table)
+    }
   })
 })

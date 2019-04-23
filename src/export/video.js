@@ -80,6 +80,7 @@ module.exports = function (main_source, layers, unlocked) {
       : _.head(_.keys(ffmpeg_presets)),
     frame_w: main_source.frame_w,
     frame_h: main_source.frame_h,
+    use_fps: main_source.use_fps,
     audio_file_path: main_source.file_path,
     export_file_path: main_source.export_file_path
   })

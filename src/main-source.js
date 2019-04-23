@@ -2,7 +2,6 @@ var h = require('virtual-dom/h')
 var bus = require('./event-bus')
 var flatInt = require('./flatInt')
 var FrameMath = require('./frame-math')
-var frameMath = FrameMath(25)
 var RLBrowser = require('./RLBrowser')
 var createVideoElement = require('./create-video-element')
 var createImageElement = require('./create-image-element')
@@ -13,6 +12,7 @@ var toInt = function (n) {
 var curr_url = null
 var curr_video = null
 var curr_image = null
+var curr_frameMath = FrameMath(25)
 
 var setCurrentTime = function (time) {
   if (curr_video) {
@@ -77,18 +77,35 @@ var mount = function (main_source, callback) {
           h -= 1
         }
 
+        let detected_fps
+        try {
+          detected_fps = videoELM.captureStream().getVideoTracks()[0].getSettings().frameRate
+        } catch (err) {
+        }
+        if (typeof detected_fps !== 'number' || detected_fps !== detected_fps || detected_fps <= 0) {
+          detected_fps = null
+        }
+
+        if (main_source.use_fps) {
+          curr_frameMath = FrameMath(main_source.use_fps)
+        } else {
+          curr_frameMath = FrameMath(25)
+        }
+
         bus.emit('set-main-source-info', {
           frame_w: w,
           frame_h: h,
+          detected_fps,
+
           // TODO use seek ranges instead
-          n_frames: Math.max(1, frameMath.secondsToFrame((videoELM.duration) || 0))
+          n_frames: Math.max(1, curr_frameMath.secondsToFrame((videoELM.duration) || 0))
         })
         curr_video = tmp
         callback()
       },
       onSeeked: function (time) {
-        time = frameMath.getNearestFrameSeconds(time)
-        bus.emit('seeked', frameMath.secondsToFrame(time), time)
+        time = curr_frameMath.getNearestFrameSeconds(time)
+        bus.emit('seeked', curr_frameMath.secondsToFrame(time), time)
       }
     })
   }
@@ -158,13 +175,13 @@ module.exports = {
   },
   incFrameNBy: function (inc) {
     if (curr_video) {
-      setCurrentTime(curr_video.elm.currentTime + (inc * frameMath.frame_length))
+      setCurrentTime(curr_video.elm.currentTime + (inc * curr_frameMath.frame_length))
     } else {
-      setCurrentTime(0 + (inc * frameMath.frame_length))
+      setCurrentTime(0 + (inc * curr_frameMath.frame_length))
     }
   },
   setFrameN: function (frame_n) {
-    setCurrentTime(frameMath.frameToSeconds(frame_n))
+    setCurrentTime(curr_frameMath.frameToSeconds(frame_n))
   },
   render: function (ctx, main_source) {
     var rotate_deg = toInt(main_source.rotate_deg)

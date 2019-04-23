@@ -118,6 +118,40 @@ module.exports = {
     jsonDB.save(db)
     return layer_id
   },
+  changeFrameRate: function (project_id, oldFps, newFps, table) {
+    const db = jsonDB.read()
+    const project = db.projects[project_id]
+    if (!project) {
+      return
+    }
+    // keyframe_points
+    for (const layer of Object.values(project.layers || {})) {
+      const oldFrames = layer.keyframe_points
+      const newFrames = {}
+      for (let oldFrameI of Object.keys(oldFrames || {})) {
+        oldFrameI = parseInt(oldFrameI, 10)
+        const time = oldFrameI / oldFps
+
+        let tableTime = 0
+        for (const tt of table) {
+          if (tt > time) {
+            break
+          }
+          tableTime = tt
+        }
+
+        let guessNewI = Math.floor(time * newFps) - 1
+        while (guessNewI / newFps < tableTime) {
+          guessNewI++
+        }
+
+        newFrames[guessNewI] = oldFrames[oldFrameI]
+      }
+      layer.keyframe_points = newFrames
+    }
+    project.main_source.use_fps = newFps
+    jsonDB.save(db)
+  },
   savePoints: function (project_id, layer_id, frame_n, points) {
     var db = jsonDB.read()
     if (!_.has(db, ['projects', project_id, 'layers', layer_id])) {

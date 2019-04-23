@@ -54,6 +54,20 @@ var pushConfirmModal = function (props) {
   })
 }
 
+function setProgressBar (key, bar) {
+  vdomHB.update({
+    waiting_progress_bars: _.assign({}, vdomHB.readState().waiting_progress_bars, {
+      [key]: bar
+    })
+  })
+}
+
+function clearProgressBar (key) {
+  vdomHB.update({
+    waiting_progress_bars: _.omit(vdomHB.readState().waiting_progress_bars, key)
+  })
+}
+
 bus.on('seeked', function (frame_n, currentTime) {
   var state = vdomHB.readState()
   if (_.has(state, ['waiting_progress_bars', 'EXPORTING'])) {
@@ -197,11 +211,7 @@ bus.on('new-project', function () {
   })
 })
 bus.on('open-project', function (id) {
-  vdomHB.update({
-    waiting_progress_bars: _.assign({
-      OPENING_CURRENT_PROJECT: { text: 'loading project...' }
-    }, vdomHB.readState().waiting_progress_bars)
-  })
+  setProgressBar('OPENING_CURRENT_PROJECT', { text: 'loading project...' })
   backend.openProject(id)
 })
 bus.on('projects', function (projects) {
@@ -214,9 +224,9 @@ bus.on('global_settings', function (global_settings) {
 })
 bus.on('set-current_project', function (project) {
   vdomHB.update({
-    current_project: project,
-    waiting_progress_bars: _.omit(vdomHB.readState().waiting_progress_bars, 'OPENING_CURRENT_PROJECT')
+    current_project: project
   })
+  clearProgressBar('OPENING_CURRENT_PROJECT')
   if (!project) {
     return// do nothing modals/index will take it from here
   }
@@ -298,6 +308,40 @@ bus.on('rotate-main-source', function (is_right) {
   })
 })
 
+bus.on('main-source-use-detected_fps', function () {
+  const state = vdomHB.readState()
+  if (!_.has(state, ['current_project', 'main_source', 'url'])) {
+    return
+  }
+  const main_source = state.current_project.main_source
+  if (main_source.use_fps || !main_source.detected_fps || main_source.detected_fps === 25) {
+    return
+  }
+
+  const file_path = main_source.file_path
+  const pjId = getCurrProjectID()
+  const oldFps = 25
+  const newFps = main_source.detected_fps
+  pushConfirmModal({
+    body: 'This will modify the edited frames to match ' +
+     Math.ceil(newFps) +
+     ' fps. This may require work re-editing points to line up. Once you convert the fps you can\'t change it back to 25 fps',
+    onYes: function () {
+      setProgressBar('GET_FRAME_RATE_TABLE', { text: 'Adjusting frames...' })
+      RLBrowser.getFrameTable(file_path)
+        .then(table => {
+          backend.changeFrameRate(pjId, oldFps, newFps, table)
+        })
+        .catch(err => {
+          bus.emit('display-error', 'Error reading frame table.', err, err + '')
+        })
+        .then(() => {
+          clearProgressBar('GET_FRAME_RATE_TABLE')
+        })
+    }
+  })
+})
+
 bus.on('add-layer', function (effect_id) {
   if (!_.has(Effects, effect_id)) {
     bus.emit('display-error', 'Not a valid effect_id: ' + effect_id)
@@ -374,12 +418,9 @@ bus.on('start-the-export-process', function () {
   }
   var startExport = function () {
     vdomHB.update({
-      show_ExportModal: false,
-      waiting_progress_bars: _.assign({
-        EXPORTING: { text: 'Exporting ' + main_source.type + '...' }
-      }, vdomHB.readState().waiting_progress_bars)
+      show_ExportModal: false
     })
-
+    setProgressBar('EXPORTING', { text: 'Exporting ' + main_source.type + '...' })
     Export[main_source.type](main_source, layers, state.unlocked)// Exodus 20:15-16
   }
 
@@ -449,16 +490,10 @@ bus.on('clear-exported_image_download_url', function () {
 })
 
 bus.on('main-source-start-loading', function (type) {
-  vdomHB.update({
-    waiting_progress_bars: _.assign({
-      MAIN_SOURCE_LOADING: { text: 'loading ' + type + '...' }
-    }, vdomHB.readState().waiting_progress_bars)
-  })
+  setProgressBar('MAIN_SOURCE_LOADING', { text: 'loading ' + type + '...' })
 })
 bus.on('main-source-done-loading', function () {
-  vdomHB.update({
-    waiting_progress_bars: _.omit(vdomHB.readState().waiting_progress_bars, 'MAIN_SOURCE_LOADING')
-  })
+  clearProgressBar('MAIN_SOURCE_LOADING')
 })
 
 bus.on('export-finished-successfully', function () {
@@ -560,9 +595,7 @@ bus.on('display-error', function (context_msg, error, clipboard_text) {
   })
 })
 bus.on('initial-load-done', function () {
-  vdomHB.update({
-    waiting_progress_bars: _.omit(vdomHB.readState().waiting_progress_bars, 'INITIAL_LOAD')
-  })
+  clearProgressBar('INITIAL_LOAD')
 })
 
 bus.on('open-ConvertModal', function (conf) {
@@ -577,14 +610,6 @@ bus.on('close-ConvertModal', function (input_file) {
   })
 })
 
-var setConvertProgress = function (bar) {
-  vdomHB.update({
-    waiting_progress_bars: _.assign({}, vdomHB.readState().waiting_progress_bars, {
-      CONVERTING: bar
-    })
-  })
-}
-
 bus.on('start-Convert', function (conf) {
   var input_n_frames = conf.input_n_frames
   if (!_.isNumber(input_n_frames) || _.isNaN(input_n_frames)) {
@@ -598,14 +623,14 @@ bus.on('start-Convert', function (conf) {
         frame = _.parseInt(parts[1], 10) || -1
       }
       if (frame < 0) {
-        setConvertProgress({ text: 'Converting...' })
+        setProgressBar('CONVERTING', { text: 'Converting...' })
         return
       }
       var percent
       if (input_n_frames > 0) {
         percent = 100 * (frame / input_n_frames)
       }
-      setConvertProgress({
+      setProgressBar('CONVERTING', {
         text: line,
         percent: percent
       })
@@ -632,12 +657,10 @@ bus.on('start-Convert', function (conf) {
       } else {
         bus.emit('display-error', 'Convert Failed! ' + code)
       }
-      vdomHB.update({
-        waiting_progress_bars: _.omit(vdomHB.readState().waiting_progress_bars, 'CONVERTING')
-      })
+      clearProgressBar('CONVERTING')
     }
   })
-  setConvertProgress({ text: 'Converting...' })
+  setProgressBar('CONVERTING', { text: 'Converting...' })
   vdomHB.update({
     ConvertModal: undefined
   })

@@ -17,16 +17,16 @@ module.exports = function (main_source) {
       _.isString(main_source.file_path) &&
       !/webm/i.test(ext)
   ) {
-    convert_btn = Button({'ev-click': bus.signal('open-ConvertModal', {
+    convert_btn = Button({ 'ev-click': bus.signal('open-ConvertModal', {
       input_file: main_source.file_path,
       input_n_frames: main_source.n_frames
-    })}, [
+    }) }, [
       'Convert to webm'
     ])
   }
 
   return h('div', [
-    h('h3', {'ev-click': bus.signal('change-main-source')}, [
+    h('h3', { 'ev-click': bus.signal('change-main-source') }, [
       FileTypeIcon(main_source.type),
       ' ',
       main_source.name
@@ -38,9 +38,22 @@ module.exports = function (main_source) {
       ? Fact('# Frames', main_source.n_frames)
       : null,
 
+    main_source.use_fps
+      ? Fact('Rate', h('span', { title: main_source.use_fps + ' fps' }, Math.ceil(main_source.use_fps) + ' fps'))
+      : main_source.detected_fps && main_source.detected_fps !== 25
+        ? h('div', { style: {
+          marginBottom: '1em',
+          textAlign: 'center'
+        } }, [
+          Button({
+            'ev-click': bus.signal('main-source-use-detected_fps', false)
+          }, 'Restore original frame rate')
+        ])
+        : null,
+
     Fact('Rotate', [
-      Button({'ev-click': bus.signal('rotate-main-source', false)}, h('i.fa.fa-rotate-left')),
-      Button({'ev-click': bus.signal('rotate-main-source', true)}, h('i.fa.fa-rotate-right'))
+      Button({ 'ev-click': bus.signal('rotate-main-source', false) }, h('i.fa.fa-rotate-left')),
+      Button({ 'ev-click': bus.signal('rotate-main-source', true) }, h('i.fa.fa-rotate-right'))
     ]),
 
     Fact('Format', [
