@@ -66,7 +66,7 @@
     "css-loader": "^2.1.0",
     "cuid": "^2.1.4",
     "dom-delegator": "^13.1.0",
-    "electron": "^4.1.4",
+    "electron": "^7.2.4",
     "electron-builder": "^20.39.0",
     "font-awesome": "^4.7.0",
     "get-in": "^2.0.0",
