@@ -7,7 +7,6 @@ var diff = require('virtual-dom/diff')
 var jsCSS = require('js-managed-css')
 var patch = require('virtual-dom/patch')
 var flatInt = require('../flatInt')
-var getIn = require('get-in')
 var Effects = require('../effects')
 var getPoints = require('../getPoints')
 var Magnifier = require('./FrameEditor/Magnifier')
@@ -436,31 +435,32 @@ var Widget = mkWidget(function (initial_hb_state) {
 var toInt = function (n) {
   return parseInt(n, 10) || 0
 }
-var hasCompleteMainSource = function (project) {
-  var parts = [
-    '' + getIn(project, ['main_source', 'url']),
-    '' + getIn(project, ['main_source', 'type']),
-    toInt(getIn(project, ['main_source', 'frame_w'])),
-    toInt(getIn(project, ['main_source', 'frame_h'])),
-    toInt(getIn(project, ['main_source', 'n_frames']))
-  ]
-  return _.every(parts, function (p) {
-    if (_.isString(p)) {
-      return p.trim().length > 0
-    }
-    return _.isNumber(p) && (p < 1)
-  })
+var isMainSourceReady = function (project) {
+  var ms = project && project.main_source
+  if (!ms) {
+    return false
+  }
+  if (!ms.url || typeof ms.url !== 'string' || ms.url.trim().length === 0) {
+    return false
+  }
+  if (!ms.type || typeof ms.type !== 'string' || ms.type.trim().length === 0) {
+    return false
+  }
+  if ((toInt(ms.frame_w) + toInt(ms.frame_h) + toInt(ms.n_frames)) === 0) {
+    return false
+  }
+  return true
 }
 
 module.exports = function (state) {
-  if (hasCompleteMainSource(state.current_project)) {
-    return h('div', {
-      style: S.xstyle.absolute({
-        background: S.color.dark_bg
-      })
-    })
+  if (isMainSourceReady(state.current_project)) {
+    return Widget(state)
   }
-  return Widget(state)
+  return h('div', {
+    style: S.xstyle.absolute({
+      background: S.color.dark_bg
+    })
+  })
 }
 module.exports.changePoint = changePoint
 module.exports.getPointsForMouseState = getPointsForMouseState

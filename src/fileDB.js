@@ -5,8 +5,7 @@ var Blob = window.Blob
 var FileReader = window.FileReader
 var is_outdated_browser = !URL || !URL.createObjectURL || !Blob || !FileReader
 
-var db = require('levelup')('fileDB', {
-  db: require('level-js'),
+var db = require('levelup')(require('level-js')('fileDB'), {
   keyEncoding: 'utf8',
   valueEncoding: 'binary'
 })

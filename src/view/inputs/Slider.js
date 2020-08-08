@@ -1,7 +1,6 @@
 var _ = require('lodash')
 var h = require('virtual-dom/h')
 var S = require('../styles')
-var getIn = require('get-in')
 var jsCSS = require('js-managed-css')
 var Delegator = require('dom-delegator')
 
@@ -19,10 +18,10 @@ var css_names = jsCSS({
 })
 
 var getSliderBar = function (DOM_main) {
-  return getIn(DOM_main, ['children', 0, 'children', 0])
+  return DOM_main && DOM_main.children && DOM_main.children[0] && DOM_main.children[0].children && DOM_main.children[0].children[0]
 }
 var getSliderHandle = function (DOM_main) {
-  return getIn(DOM_main, ['children', 1])
+  return DOM_main && DOM_main.children && DOM_main.children[1]
 }
 
 var updateSliderPosition = function (DOM_main, pos) {

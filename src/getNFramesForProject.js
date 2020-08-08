@@ -1,5 +1,3 @@
-var getIn = require('get-in')
-
 module.exports = function (project) {
-  return parseInt(getIn(project, ['main_source', 'n_frames']), 10) || 0
+  return parseInt(project && project.main_source && project.main_source.n_frames, 10) || 0
 }

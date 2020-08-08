@@ -24,7 +24,7 @@ var conf = {
       {
         test: /\.(png|jpg|gif|otf|eot|svg|ttf|woff|woff2)(\?.*)?$/i,
         use: [
-          {loader: 'url-loader'}
+          {loader: 'url-loader', options: {esModule: false}}
         ]
       }
     ]

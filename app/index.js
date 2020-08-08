@@ -1,13 +1,8 @@
 'use strict'
 const path = require('path')
-const electron = require('electron')
+const { app, Menu, shell, BrowserWindow, session } = require('electron')
 require('./ffmpeg')
 require('./rlhome')
-
-const app = electron.app
-const Menu = electron.Menu
-const shell = electron.shell
-const BrowserWindow = electron.BrowserWindow
 
 const isDevMode = process.env.NODE_ENV === 'development'
 
@@ -36,6 +31,18 @@ if (process.platform === 'darwin') {
 }
 
 app.on('ready', function () {
+  if (!isDevMode) {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      // eslint-disable-next-line
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Content-Security-Policy': [`default-src 'self'`]
+        }
+      })
+    })
+  }
+
   mainWindow = new BrowserWindow({
     title: 'Rebaslight' + (isDevMode ? ' DEVELOPMENT' : ''),
     webPreferences: {

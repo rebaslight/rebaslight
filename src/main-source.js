@@ -179,7 +179,7 @@ module.exports = {
       }, 100)
     })
   },
-  reloadFrameRate: function(main_source){
+  reloadFrameRate: function (main_source) {
     if (main_source.use_fps) {
       curr_frameMath = FrameMath(main_source.use_fps)
     } else {
