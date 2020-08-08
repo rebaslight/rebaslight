@@ -1,3 +1,3 @@
 module.exports = function (route) {
-  return 'http://www.rebaslight.com' + route
+  return 'https://www.rebaslight.com' + route
 }

@@ -1,28 +1,21 @@
 var _ = require('lodash')
 var bus = require('./event-bus')
-var xhr = require('xhr')
 var cuid = require('cuid')
 var cur_v = require('../package.json').version
 var semver = require('semver')
 var RLBrowser = require('./RLBrowser')
 
 var checkIfWereUpToDate = function () {
-  xhr({
-    url: 'http://www.rebaslight.com/latest.json?v=' + cuid(), // to avoid the http cache
-    json: true,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }, function (err, resp, body) {
-    var version = !err && _.get(resp, 'body.version')
-    if (_.isString(version)) {
-      if (semver.gt(version, cur_v)) { // only if it's newer (i.e. someone was sent a newer version to test out pre-launch)
-        bus.emit('new-version-available', version)
+  fetch('https://www.rebaslight.com/latest.json?v=' + cuid()) // ?v= to avoid the http cache
+    .then(res => res.json())
+    .then(json => {
+      if (json && typeof json.version === 'string' && semver.gt(json.version, cur_v)) {
+        bus.emit('new-version-available', json.version)
       }
-    } else {
+    })
+    .catch(err => {
       // Something went wrong... most likely no internet connection
-    }
-  })
+    })
 }
 
 if (RLBrowser) {

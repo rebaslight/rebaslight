@@ -1,6 +1,6 @@
 {
   "name": "rebaslight",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "private": true,
   "description": "Rebaslight - an easy to use special effects editor",
   "repository": "git@github.com:rebaslight/rebaslight.git",
@@ -89,7 +89,6 @@
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "wrap-prevent-default": "^1.0.0",
-    "xhr": "^2.2.0",
     "xtend": "^4.0.1"
   },
   "eslintConfig": {

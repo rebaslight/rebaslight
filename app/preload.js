@@ -52,9 +52,9 @@ window.REBASLIGHT_BROWSER = {
       filters: [
         {name: 'Video', extensions: ['mp4']}
       ]
-    }, function (filePath) {
-      callback(null, filePath)
     })
+      .then(resp => callback(null, resp.filePath))
+      .catch(err => callback(err))
   },
   projects: {
     write: function (data, callback) {
