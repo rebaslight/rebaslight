@@ -19,9 +19,22 @@ jobs:
         with:
           node-version: 14
 
+      - name: Get the ffmpeg binaries
+        if: startsWith(matrix.os, 'ubuntu') || startsWith(matrix.os, 'macos')
+        run: |
+          curl -L https://rebaslight.s3.amazonaws.com/build/ffmpeg-bins-4.4.1.tar.xz -o ffmpeg-bins.tar.xz
+          tar xf ffmpeg-bins.tar.xz
+
+      - name: Get the ffmpeg binaries
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          curl -L https://rebaslight.s3.amazonaws.com/build/ffmpeg-bins-4.4.1-win.zip -o ffmpeg-bins.zip
+          unzip ffmpeg-bins.zip
+
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
+          build_script_name: bundle-p
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}

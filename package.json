@@ -1,6 +1,6 @@
 {
   "name": "rebaslight",
-  "version": "3.6.2",
+  "version": "3.7.0",
   "private": true,
   "description": "Rebaslight - an easy to use special effects editor",
   "repository": "git@github.com:rebaslight/rebaslight.git",
@@ -54,7 +54,6 @@
     "run": "NODE_ENV=development electron ./app",
     "test": "standardx && node src/tests.js",
     "pack": "electron-builder --dir",
-    "build": "npm run bundle-p && curl -L https://rebaslight.s3.amazonaws.com/build/ffmpeg-bins-4.4.1.tar.xz -o ffmpeg-bins.tar.xz && tar xf ffmpeg-bins.tar.xz",
     "bundle-p": "esbuild --bundle --loader:.png=dataurl --define:global=window --define:process.env.NODE_DEBUG=undefined src/index.js --outfile=app/bundle.js --define:process.env.NODE_ENV=\\\"production\\\" --minify",
     "bundle-d": "esbuild --bundle --loader:.png=dataurl --define:global=window --define:process.env.NODE_DEBUG=undefined src/index.js --outfile=app/bundle.js --define:process.env.NODE_ENV=\\\"development\\\" --watch",
     "dist": "electron-builder --x64",
