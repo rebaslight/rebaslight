@@ -71,7 +71,7 @@
     "js-managed-css": "^1.4.0",
     "lodash": "^4.17.11",
     "main-loop": "^3.2.0",
-    "normalize.css": "^5.0.0",
+    "normalize.css": "^8.0.1",
     "path-browserify": "^1.0.1",
     "rgb-hex": "^4.0.0",
     "scriptsp": "^1.1.1",
