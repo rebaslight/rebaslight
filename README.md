@@ -1,7 +1,5 @@
 # Rebaslight
 
-[![build status](https://api.travis-ci.org/rebaslight/rebaslight.svg)](https://travis-ci.org/rebaslight/rebaslight)
-
 Rebaslight - an easy to use special effects editor
 
 [Download/Install](http://www.rebaslight.com/#download)
