@@ -1,4 +1,4 @@
-var _ = require('lodash')
+/* global fetch */
 var bus = require('./event-bus')
 var cuid = require('cuid')
 var cur_v = require('../package.json').version
@@ -13,6 +13,7 @@ var checkIfWereUpToDate = function () {
         bus.emit('new-version-available', json.version)
       }
     })
+    // eslint-disable-next-line
     .catch(err => {
       // Something went wrong... most likely no internet connection
     })

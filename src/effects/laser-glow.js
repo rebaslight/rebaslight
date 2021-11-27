@@ -69,7 +69,7 @@ module.exports = {
     }
     _.forEach(blur_sizes, function (b) {
       ctx2.shadowBlur = b
-      ctx2.fill()// eslint-disable-line lodash/prefer-lodash-method
+      ctx2.fill()
     })
 
     applyGradient(ctx2, mkGradientEZ.apply(null, _.tail(settings.glow_color)))

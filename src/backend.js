@@ -14,7 +14,7 @@ module.exports = {
         bus.emit('display-error', 'Failed to load projects', err)
         return
       }
-      contra.map(_.isPlainObject(json && json.projects) ? json.projects : {}, function (project, next) { // eslint-disable-line lodash/prefer-lodash-method
+      contra.map(_.isPlainObject(json && json.projects) ? json.projects : {}, function (project, next) {
         if (project && project.main_source && project.main_source.fileDB_id) {
           fileDB.getURL(project.main_source.fileDB_id, next)
         } else {

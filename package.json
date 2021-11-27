@@ -80,7 +80,7 @@
     "scriptsp": "^1.1.1",
     "seed-random": "^2.2.0",
     "semver": "^7.3.2",
-    "standardx": "^2.0.0",
+    "standardx": "^7.0.0",
     "tape": "^5.0.1",
     "virtual-dom": "^2.1.1",
     "virtual-dom-absolute-layout": "^1.0.0",
@@ -93,7 +93,14 @@
   },
   "eslintConfig": {
     "rules": {
-      "camelcase": 0
+      "camelcase": 0,
+      "no-var": 0,
+      "quote-props": 0,
+      "dot-notation": 0,
+      "indent": 0,
+      "object-curly-spacing": 0,
+      "object-curly-newline": 0,
+      "multiline-ternary": 0
     }
   },
   "dependencies": {

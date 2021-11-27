@@ -17,7 +17,7 @@ ipcMain.on('ffmpeg-start', function (event, opts) {
   if (!/ffmpeg(\.exe)?$/i.test(ffmpegPath)) {
     return
   }
-  if (!ffmpegPresets.hasOwnProperty(opts.preset)) {
+  if (!Object.prototype.hasOwnProperty.call(ffmpegPresets, opts.preset)) {
     event.sender.send('ffmpeg-error', 'Invalid export preset.')
     event.sender.send('ffmpeg-stopped', 1)
     return

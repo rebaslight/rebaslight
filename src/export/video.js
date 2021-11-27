@@ -20,7 +20,7 @@ var onStopped = function (code) {
   is_running = false
   closeProgressBar()
   if (code !== 0) {
-    bus.emit('display-error', 'Failed to export: ' + code, void 0, ffmpeg_output)
+    bus.emit('display-error', 'Failed to export: ' + code, undefined, ffmpeg_output)
     // TODO delete the file?
   } else {
     bus.emit('export-finished-successfully')

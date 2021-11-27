@@ -12,22 +12,24 @@ var nextCallID = (function () {
 }())
 
 var defRPC = function (name) {
-  var callbacks = {}
+  const callbacks = new Map()
   ipcRenderer.on(name + '-error', function (event, callid, err) {
-    if (callbacks.hasOwnProperty(callid)) {
-      callbacks[callid](err)
-      delete callbacks[callid]
+    const cb = callbacks.get(callid)
+    if (cb) {
+      cb(err)
     }
+    callbacks.delete(callid)
   })
   ipcRenderer.on(name + '-data', function (event, callid, data) {
-    if (callbacks.hasOwnProperty(callid)) {
-      callbacks[callid](undefined, data)
-      delete callbacks[callid]
+    const cb = callbacks.get(callid)
+    if (cb) {
+      cb(undefined, data)
     }
+    callbacks.delete(callid)
   })
   return function (data, callback) {
     var callid = nextCallID()
-    callbacks[callid] = callback
+    callbacks.set(callid, callback)
     ipcRenderer.send(name, callid, data)
   }
 }
@@ -42,7 +44,7 @@ window.REBASLIGHT_BROWSER = {
   },
   showSaveDialog: function (opts, callback) {
     var getStrOpt = function (key, dflt) {
-      if (opts && opts.hasOwnProperty(key) && (typeof opts[key] === 'string')) {
+      if (opts && Object.prototype.hasOwnProperty.call(opts, key) && (typeof opts[key] === 'string')) {
         return opts[key]
       }
       return dflt

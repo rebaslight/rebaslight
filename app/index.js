@@ -36,7 +36,7 @@ app.on('ready', function () {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
-        'Content-Security-Policy': [`default-src 'self' data: 'unsafe-inline'; connect-src https://www.rebaslight.com`]
+        'Content-Security-Policy': ['default-src \'self\' data: \'unsafe-inline\'; connect-src https://www.rebaslight.com']
       }
     })
   })

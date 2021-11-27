@@ -273,7 +273,7 @@ var Widget = mkWidget(function (initial_hb_state) {
       : []
     renderFrame(ctx, state.current_project.main_source, layers, state.frame, state.unlocked)
 
-    let showMagnifier = state.showMagnifier && isFrameLayerWithLastSelectedPoint(state, mouse_state)
+    const showMagnifier = state.showMagnifier && isFrameLayerWithLastSelectedPoint(state, mouse_state)
 
     magnifier.render(mouse_state, showMagnifier)
 
