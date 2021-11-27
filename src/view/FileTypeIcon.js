@@ -1,9 +1,10 @@
-var h = require('virtual-dom/h')
+var IconFilm = require('../icons/IconFilm')
+var IconPhoto = require('../icons/IconPhoto')
 
 module.exports = function (type) {
   if (type === 'video') {
-    return h('i.fa.fa-film')
+    return IconFilm()
   } else if (type === 'image') {
-    return h('i.fa.fa-picture-o')
+    return IconPhoto()
   }
 }

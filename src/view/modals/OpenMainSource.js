@@ -4,7 +4,6 @@ var S = require('../styles')
 var bus = require('../../event-bus')
 var Modal = require('./Modal')
 var jsCSS = require('js-managed-css')
-var fileDB = require('../../fileDB')
 
 var css_vars = jsCSS({
   '.$drop_zone': {
@@ -57,22 +56,7 @@ var onFileChange = function (e) {
     file_info.url = 'file://' + file.path
     bus.emit('set-main-source', file_info)
   } else {
-    if (file_info.type === 'video') {
-      bus.emit('display-error', 'Opening video files is only available in the downloadable version.\n\nTry editing a picture file instead.')
-      return
-    }
-    bus.emit('main-source-start-loading', file_info.type)
-    fileDB.storeFile(file, function (err, blah) {
-      if (err) {
-        return bus.emit('display-error', 'Trouble loading file', err)
-      }
-
-      file_info.url = blah.url
-      file_info.fileDB_id = blah.id
-
-      bus.emit('set-main-source', file_info)
-      bus.emit('main-source-done-loading')
-    })
+    bus.emit('display-error', 'Unable to access filepath.')
   }
 }
 

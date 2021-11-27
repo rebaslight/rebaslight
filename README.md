@@ -1,14 +1,12 @@
 # Rebaslight
 
-[![build status](https://api.travis-ci.org/rebaslight/rebaslight.svg)](https://travis-ci.org/rebaslight/rebaslight)
-
 Rebaslight - an easy to use special effects editor
 
 [Download/Install](http://www.rebaslight.com/#download)
 
 ## Rebaslight Terms, Conditions, and License Agreement
 
-Rebaslight is a product of Very Small Helm LLC, Copyright (c) 2008-2019.
+Rebaslight is a product of Very Small Helm LLC, Copyright (c) 2008-2021.
 
 Rebaslight's codebase is open source and adopts the [GNU AGPLv3](https://github.com/rebaslight/rebaslight/blob/master/AGPL-3.0) license.
 

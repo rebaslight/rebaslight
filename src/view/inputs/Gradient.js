@@ -1,9 +1,9 @@
+import rgbToHex from 'rgb-hex'
+import hexToRgb from 'hex-rgb'
 var _ = require('lodash')
 var h = require('virtual-dom/h')
 var Color = require('./Color')
 var Label = require('../Label')
-var rgbToHex = require('rgb-hex')
-var hexToRgb = require('hex-rgb')
 var Select = require('./Select')
 var Slider = require('./Slider')
 var flatInt = require('../../flatInt')
@@ -98,8 +98,8 @@ module.exports = function (props) {
     is_custom ? Color({
       value: '#' + rgbToHex(gradient_value[1], gradient_value[2], gradient_value[3]),
       onChange: function (color) {
-        var v = ['custom', gradient_value[0]].concat(hexToRgb(color))
-        v.push(gradient_value[4])
+        const {red, green, blue} = hexToRgb(color)
+        const v = ['custom', gradient_value[0], red, green, blue, gradient_value[4]]
         onChange(v)
       }
     }) : null,

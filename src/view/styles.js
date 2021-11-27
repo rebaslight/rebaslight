@@ -5,6 +5,7 @@ jsCSS({
   'body, html': {
     'cursor': 'default',
     'font-size': '16px',
+    'font-family': 'sans-serif',
     '-webkit-touch-callout': 'none',
     '-webkit-user-select': 'none',
     '-khtml-user-select': 'none',

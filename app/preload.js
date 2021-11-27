@@ -12,49 +12,50 @@ var nextCallID = (function () {
 }())
 
 var defRPC = function (name) {
-  var callbacks = {}
+  const callbacks = new Map()
   ipcRenderer.on(name + '-error', function (event, callid, err) {
-    if (callbacks.hasOwnProperty(callid)) {
-      callbacks[callid](err)
-      delete callbacks[callid]
+    const cb = callbacks.get(callid)
+    if (cb) {
+      cb(err)
     }
+    callbacks.delete(callid)
   })
   ipcRenderer.on(name + '-data', function (event, callid, data) {
-    if (callbacks.hasOwnProperty(callid)) {
-      callbacks[callid](undefined, data)
-      delete callbacks[callid]
+    const cb = callbacks.get(callid)
+    if (cb) {
+      cb(undefined, data)
     }
+    callbacks.delete(callid)
   })
   return function (data, callback) {
     var callid = nextCallID()
-    callbacks[callid] = callback
+    callbacks.set(callid, callback)
     ipcRenderer.send(name, callid, data)
   }
 }
 
 var rpcSave = defRPC('rlhome-projects-save')
 var rpcRead = defRPC('rlhome-projects-read')
+var rpcShowSaveDialog = defRPC('rlhome-show-save-dialog')
 
 window.REBASLIGHT_BROWSER = {
   quit: function () {
-    electron.remote.app.quit()
+    ipcRenderer.send('rlhome-quit')
   },
   showSaveDialog: function (opts, callback) {
     var getStrOpt = function (key, dflt) {
-      if (opts && opts.hasOwnProperty(key) && (typeof opts[key] === 'string')) {
+      if (opts && Object.prototype.hasOwnProperty.call(opts, key) && (typeof opts[key] === 'string')) {
         return opts[key]
       }
       return dflt
     }
-    electron.remote.dialog.showSaveDialog({
+    rpcShowSaveDialog({
       title: getStrOpt('title', 'Save'),
       defaultPath: getStrOpt('defaultPath'),
       filters: [
         {name: 'Video', extensions: ['mp4']}
       ]
-    })
-      .then(resp => callback(null, resp.filePath))
-      .catch(err => callback(err))
+    }, callback)
   },
   projects: {
     write: function (data, callback) {

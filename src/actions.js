@@ -535,7 +535,7 @@ bus.on('close-video_player_modal', function () {
 bus.on('show-SaveModal', function () {
   bus.emit('push-generic_modal_q', {
     title: 'Save',
-    body: `Rebaslight saves automatically. Next time you open Rebaslight it will pick up where you left off. Use "Export" to save the video file with your effects applied.`,
+    body: 'Rebaslight saves automatically. Next time you open Rebaslight it will pick up where you left off. Use "Export" to save the video file with your effects applied.',
     buttons: [
       {
         text: 'Close',

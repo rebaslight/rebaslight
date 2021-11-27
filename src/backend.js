@@ -1,9 +1,7 @@
-var contra = require('contra')
 var _ = require('lodash')
 var bus = require('./event-bus')
 var cuid = require('cuid')
 var jsonDB = require('./jsonDB')
-var fileDB = require('./fileDB')
 var Effects = require('./effects')
 var getNextNameInSequence = require('./getNextNameInSequence')
 
@@ -14,52 +12,42 @@ module.exports = {
         bus.emit('display-error', 'Failed to load projects', err)
         return
       }
-      contra.map(_.isPlainObject(json && json.projects) ? json.projects : {}, function (project, next) { // eslint-disable-line lodash/prefer-lodash-method
-        if (project && project.main_source && project.main_source.fileDB_id) {
-          fileDB.getURL(project.main_source.fileDB_id, next)
-        } else {
-          next()
-        }
-      }, function (err, data) {
-        if (err) {
-          // ignore it b/c we can just have them load the file again manually
-        }
-        _.forEach(data, function (url, project_id) {
-          if (_.isString(url)) {
-            if (_.has(json, ['projects', project_id, 'main_source', 'fileDB_id'])) {
-              json.projects[project_id].main_source.url = url
-            }
+      const data = _.isPlainObject(json && json.projects) ? json.projects : {}
+      _.forEach(data, function (url, project_id) {
+        if (_.isString(url)) {
+          if (_.has(json, ['projects', project_id, 'main_source', 'fileDB_id'])) {
+            json.projects[project_id].main_source.url = url
           }
-        })
-        if (_.has(json, 'auth')) {
-          // if they purchased an effect in the past, then unlock
-          if (true &&
-              _.isEqual(_.keys(json.auth).sort(), ['email', 'timestamp', 'token']) &&
-              _.isString(json.auth.email) &&
-              _.isNumber(json.auth.timestamp) &&
-              _.isString(json.auth.token)) {
-            if (_.find(json.projects, function (p) {
-              return _.find(p.layers, function (l) {
-                return _.includes([
-                  'muzzle-flash',
-                  'lightning'
-                ], l.effect_id)
-              })
-            })) {
-              json.unlocked = 'Effect purchased by: ' +
-                json.auth.email +
-                ' | last sign-in: ' +
-                (new Date(json.auth.timestamp * 1000)).toISOString()
-            }
-          }
-          delete json.auth
         }
-        if (_.has(json, 'unlocked') && (!_.isString(json.unlocked) || json.unlocked.trim().length === 0)) {
-          delete json.unlocked
-        }
-        jsonDB.save(json)// this updates in-memory state as well
-        bus.emit('initial-load-done')
       })
+      if (_.has(json, 'auth')) {
+        // if they purchased an effect in the past, then unlock
+        if (true &&
+            _.isEqual(_.keys(json.auth).sort(), ['email', 'timestamp', 'token']) &&
+            _.isString(json.auth.email) &&
+            _.isNumber(json.auth.timestamp) &&
+            _.isString(json.auth.token)) {
+          if (_.find(json.projects, function (p) {
+            return _.find(p.layers, function (l) {
+              return _.includes([
+                'muzzle-flash',
+                'lightning'
+              ], l.effect_id)
+            })
+          })) {
+            json.unlocked = 'Effect purchased by: ' +
+              json.auth.email +
+              ' | last sign-in: ' +
+              (new Date(json.auth.timestamp * 1000)).toISOString()
+          }
+        }
+        delete json.auth
+      }
+      if (_.has(json, 'unlocked') && (!_.isString(json.unlocked) || json.unlocked.trim().length === 0)) {
+        delete json.unlocked
+      }
+      jsonDB.save(json)// this updates in-memory state as well
+      bus.emit('initial-load-done')
     })
   },
   openProject: function (id) {
