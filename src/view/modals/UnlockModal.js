@@ -48,6 +48,7 @@ module.exports = function (state) {
     return Modal({
       title: 'Paid!',
       onClose: onClose,
+      max_width: 400,
       buttons: []
     }, h('div', [
       h('p', [
@@ -91,6 +92,7 @@ module.exports = function (state) {
   return Modal({
     title: 'Free Version',
     onClose: onClose,
+    max_width: 400,
     buttons: []
   }, h('form', { 'ev-submit': function (e) {
     e.preventDefault()

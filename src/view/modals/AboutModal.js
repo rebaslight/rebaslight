@@ -5,7 +5,8 @@ var css_vars = require('../common_css')
 module.exports = function (props) {
   return Modal({
     title: 'About',
-    onClose: props.onClose
+    onClose: props.onClose,
+    max_width: 400,
   }, h('div', [
     h('h3', 'Rebaslight'),
     h('p', [

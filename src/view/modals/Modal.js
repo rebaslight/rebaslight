@@ -11,7 +11,7 @@ var header_height = 30
 module.exports = function (props, body) {
   var title = props.title || ''
   var onClose = props.onClose
-  var max_width = props.max_width || 400
+  var max_width = props.max_width || 500
   var buttons = props.buttons
   if (!_.has(props, 'buttons') && !!onClose) {
     buttons = [

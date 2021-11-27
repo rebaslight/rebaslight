@@ -110,7 +110,7 @@ module.exports = function (props) {
         }, [
           h('div.' + css_vars.progress_bar + (has_percent ? '' : '.' + css_vars.animated_stripes), {
             style: {
-              width: has_percent ? bar.percent + '%' : '100%'
+              width: has_percent ? Math.min(bar.percent, 100) + '%' : '100%'
             }
           })
         ])

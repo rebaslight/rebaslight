@@ -28,11 +28,11 @@ module.exports = function (main_source) {
       path.dirname(main_source.file_path),
       file_name
     ) + '-RLout.mp4'
-    process.nextTick(function () {
+    setTimeout(function () {
       bus.emit('set-main-source-info', {
         export_file_path: export_file_path
       })
-    })
+    }, 0)
   }
 
   return h('div', {
