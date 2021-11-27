@@ -34,10 +34,11 @@ var defRPC = function (name) {
 
 var rpcSave = defRPC('rlhome-projects-save')
 var rpcRead = defRPC('rlhome-projects-read')
+var rpcShowSaveDialog = defRPC('rlhome-show-save-dialog')
 
 window.REBASLIGHT_BROWSER = {
   quit: function () {
-    electron.remote.app.quit()
+    ipcRenderer.send('rlhome-quit')
   },
   showSaveDialog: function (opts, callback) {
     var getStrOpt = function (key, dflt) {
@@ -46,15 +47,13 @@ window.REBASLIGHT_BROWSER = {
       }
       return dflt
     }
-    electron.remote.dialog.showSaveDialog({
+    rpcShowSaveDialog({
       title: getStrOpt('title', 'Save'),
       defaultPath: getStrOpt('defaultPath'),
       filters: [
         {name: 'Video', extensions: ['mp4']}
       ]
-    })
-      .then(resp => callback(null, resp.filePath))
-      .catch(err => callback(err))
+    }, callback)
   },
   projects: {
     write: function (data, callback) {

@@ -62,3 +62,13 @@ defRPC('rlhome-projects-read', function (data, callback) {
 defRPC('rlhome-projects-save', function (data, callback) {
   save(data, callback)
 })
+
+defRPC('rlhome-show-save-dialog', function (data, callback) {
+  electron.dialog.showSaveDialog(data)
+    .then(resp => callback(null, resp.filePath))
+    .catch(err => callback(err))
+})
+
+ipcMain.on('rlhome-quit', function () {
+  electron.app.quit()
+})

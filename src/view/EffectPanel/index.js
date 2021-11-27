@@ -5,6 +5,7 @@ var bus = require('../../event-bus')
 var jsCSS = require('js-managed-css')
 var Layer = require('./Layer')
 var MainSource = require('./MainSource')
+var IconTrash = require('../../icons/IconTrash')
 
 var css = jsCSS({
   'h3.$title': {
@@ -16,6 +17,7 @@ var css = jsCSS({
       'cursor': 'pointer',
       'float': 'right',
       'color': S.color.link_color,
+      'height': '1em',
       ':hover': {
         'color': S.color.link_highlight
       }
@@ -69,9 +71,9 @@ module.exports = function (state) {
     })
   }, [
     title ? h('h3.' + css.title, [
-      delete_action ? h('i.fa.fa-trash.' + css.delete_btn, {
-        'ev-click': delete_action
-      }) : null,
+      delete_action
+        ? h('i.' + css.delete_btn, {'ev-click': delete_action}, IconTrash())
+        : null,
       title
     ]) : null,
     body,

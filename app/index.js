@@ -31,17 +31,15 @@ if (process.platform === 'darwin') {
 }
 
 app.on('ready', function () {
-  if (!isDevMode) {
-    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-      // eslint-disable-next-line
-      callback({
-        responseHeaders: {
-          ...details.responseHeaders,
-          'Content-Security-Policy': [`default-src 'self' data: 'unsafe-inline'; connect-src https://www.rebaslight.com`]
-        }
-      })
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    // eslint-disable-next-line
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [`default-src 'self' data: 'unsafe-inline'; connect-src https://www.rebaslight.com`]
+      }
     })
-  }
+  })
 
   mainWindow = new BrowserWindow({
     title: 'Rebaslight' + (isDevMode ? ' DEVELOPMENT' : ''),

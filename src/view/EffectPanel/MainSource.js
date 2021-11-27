@@ -5,6 +5,7 @@ var path = require('path')
 var Fact = require('../Fact')
 var Button = require('../Button')
 var FileTypeIcon = require('../FileTypeIcon')
+var IconRotate = require('../../icons/IconRotate')
 
 module.exports = function (main_source) {
   var ext = ''
@@ -26,8 +27,15 @@ module.exports = function (main_source) {
   }
 
   return h('div', [
-    h('h3', { 'ev-click': bus.signal('change-main-source') }, [
-      FileTypeIcon(main_source.type),
+    h('h3', {
+      'ev-click': bus.signal('change-main-source'),
+      style: {'cursor': 'pointer'}
+    }, [
+      h('span', {style: {
+        height: '1em',
+        display: 'inline-block',
+        marginRight: '0.25em'
+      }}, FileTypeIcon(main_source.type)),
       ' ',
       main_source.name
     ]),
@@ -52,8 +60,12 @@ module.exports = function (main_source) {
         : null,
 
     Fact('Rotate', [
-      Button({ 'ev-click': bus.signal('rotate-main-source', false) }, h('i.fa.fa-rotate-left')),
-      Button({ 'ev-click': bus.signal('rotate-main-source', true) }, h('i.fa.fa-rotate-right'))
+      Button({ 'ev-click': bus.signal('rotate-main-source', false) },
+        h('div', {style: {height: '1em'}}, IconRotate('left'))
+      ),
+      Button({ 'ev-click': bus.signal('rotate-main-source', true) },
+        h('div', {style: {height: '1em'}}, IconRotate('right'))
+      )
     ]),
 
     Fact('Format', [

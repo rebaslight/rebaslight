@@ -4,3 +4,6 @@
 /ffmpeg-bins
 /app/bundle.js
 /app/bundle.js.map
+/app/bundle.css
+.vscode
+/tmp
