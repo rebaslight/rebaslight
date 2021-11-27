@@ -6,7 +6,7 @@ module.exports = function (props) {
   return Modal({
     title: 'About',
     onClose: props.onClose,
-    max_width: 400,
+    max_width: 400
   }, h('div', [
     h('h3', 'Rebaslight'),
     h('p', [
