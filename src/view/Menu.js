@@ -157,7 +157,6 @@ module.exports = function (state) {
       label: 'Help',
       items: [
         ['About', bus.signal('show-about-modal')],
-        ['Contact us', { href: toRlURL('/#contact') }],
         [
           'License',
           bus.signal('UnlockModal-show')

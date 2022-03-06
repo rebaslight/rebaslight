@@ -6,7 +6,7 @@ Rebaslight - an easy to use special effects editor
 
 ## Rebaslight Terms, Conditions, and License Agreement
 
-Rebaslight is a product of Very Small Helm LLC, Copyright (c) 2008-2021.
+Rebaslight is a product of Very Small Helm LLC, Copyright (c) 2008-2022.
 
 Rebaslight's codebase is open source and adopts the [GNU AGPLv3](https://github.com/rebaslight/rebaslight/blob/master/AGPL-3.0) license.
 
