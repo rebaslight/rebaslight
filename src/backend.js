@@ -1,9 +1,12 @@
 var _ = require('lodash')
 var bus = require('./event-bus')
-var cuid = require('cuid')
 var jsonDB = require('./jsonDB')
 var Effects = require('./effects')
 var getNextNameInSequence = require('./getNextNameInSequence')
+
+function randomId() {
+  return (Date.now() + "" + Math.random()).replace(/\./, "")
+}
 
 module.exports = {
   init: function () {
@@ -58,7 +61,7 @@ module.exports = {
   setMainSource: function (project_id, file_info) {
     var db = jsonDB.read()
     if (!_.has(db, ['projects', project_id])) {
-      project_id = cuid()
+      project_id = randomId()
       if (!_.has(db, 'projects')) {
         db['projects'] = {}
       }
@@ -95,7 +98,7 @@ module.exports = {
     if (!_.has(db.projects[project_id], 'layers')) {
       db.projects[project_id]['layers'] = {}
     }
-    var layer_id = cuid()
+    var layer_id = randomId()
     db.projects[project_id]['layers'][layer_id] = {
       id: layer_id,
       name: getNextNameInSequence([effect_name + ' 0'].concat(_.map(db.projects[project_id]['layers'], 'name')), effect_name),

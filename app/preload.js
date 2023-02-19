@@ -1,5 +1,3 @@
-var fs = require('fs')
-var URL = require('url').URL
 var electron = require('electron')
 var ipcRenderer = electron.ipcRenderer
 
@@ -36,6 +34,9 @@ var defRPC = function (name) {
 
 var rpcSave = defRPC('rlhome-projects-save')
 var rpcRead = defRPC('rlhome-projects-read')
+var rpcInputFileURLExists = defRPC('rlhome-inputFileURLExists')
+var rpcDoesFileExist = defRPC('rlhome-doesFileExist')
+
 var rpcShowSaveDialog = defRPC('rlhome-show-save-dialog')
 
 window.REBASLIGHT_BROWSER = {
@@ -66,20 +67,10 @@ window.REBASLIGHT_BROWSER = {
     }
   },
   inputFileURLExists: function (fileUrl, callback) {
-    fs.access(new URL(fileUrl), fs.constants.R_OK, callback)
+    rpcInputFileURLExists(fileUrl, callback)
   },
   doesFileExist: function (filePath, callback) {
-    fs.open(filePath, 'wx', function (err, fd) {
-      if (err) {
-        if (err.code === 'EEXIST') {
-          callback(null, true)
-          return
-        }
-        callback(err)
-        return
-      }
-      fs.close(fd, callback)
-    })
+    rpcDoesFileExist(filePath, callback)
   },
   Exporter: function (opts) {
     ipcRenderer.on('ffmpeg-stopped', function (event, code) {

@@ -1,12 +1,11 @@
 /* global fetch */
 var bus = require('./event-bus')
-var cuid = require('cuid')
 var cur_v = require('../package.json').version
 var semver = require('semver')
 var RLBrowser = require('./RLBrowser')
 
 var checkIfWereUpToDate = function () {
-  fetch('https://www.rebaslight.com/latest.json?v=' + cuid()) // ?v= to avoid the http cache
+  fetch('https://www.rebaslight.com/latest.json?v=' + Date.now()) // ?v= to avoid the http cache
     .then(res => res.json())
     .then(json => {
       if (json && typeof json.version === 'string' && semver.gt(json.version, cur_v)) {

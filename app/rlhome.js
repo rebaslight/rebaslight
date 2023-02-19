@@ -1,4 +1,5 @@
 var fs = require('fs')
+var URL = require('url').URL
 var path = require('path')
 var electron = require('electron')
 
@@ -67,6 +68,24 @@ defRPC('rlhome-show-save-dialog', function (data, callback) {
   electron.dialog.showSaveDialog(data)
     .then(resp => callback(null, resp.filePath))
     .catch(err => callback(err))
+})
+
+defRPC('rlhome-inputFileURLExists', function (fileUrl, callback) {
+  fs.access(new URL(fileUrl), fs.constants.R_OK, callback)
+})
+
+defRPC('rlhome-doesFileExist', function (filePath, callback) {
+  fs.open(filePath, 'wx', function (err, fd) {
+    if (err) {
+      if (err.code === 'EEXIST') {
+        callback(null, true)
+        return
+      }
+      callback(err)
+      return
+    }
+    fs.close(fd, callback)
+  })
 })
 
 ipcMain.on('rlhome-quit', function () {
